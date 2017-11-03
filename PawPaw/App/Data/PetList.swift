@@ -59,7 +59,7 @@ class PetList {
                 }
                 if let resultPets = resultPets {
                     strongSelf.pets.append(contentsOf: resultPets)
-                    
+                    strongSelf.filterDuplicates()
                     if strongSelf.pets.count >= PetLoadThreshold || strongSelf.pets.count == strongSelf.lastLoadedCount {
                         if let completion = completion {
                             completion(strongSelf.pets, resultError)
@@ -92,6 +92,7 @@ class PetList {
             }
             if let strongSelf = self, let resultPets = resultPets {
                 strongSelf.pets.append(contentsOf: resultPets)
+                strongSelf.filterDuplicates()
             }
             if let completion = completion {
                 completion(resultPets, resultError)
@@ -143,6 +144,20 @@ class PetList {
             result = true
         }
         return result
+    }
+    
+    private func filterDuplicates() {
+        var filtered = [Pet]()
+        var identifiers = [String]()
+        
+        for curPet in self.pets {
+            if identifiers.contains(curPet.identifier) == false {
+                filtered.append(curPet)
+                identifiers.append(curPet.identifier)
+            }
+        }
+        
+        self.pets = filtered
     }
     
 }

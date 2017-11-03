@@ -52,17 +52,71 @@ class FilterViewController: UIViewController {
     
     private func setupButtons() {
         self.femaleButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.femaleButton, isSelected: false)
         self.maleButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.maleButton, isSelected: false)
         self.extraSmallButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.extraSmallButton, isSelected: false)
         self.smallButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.smallButton, isSelected: false)
         self.mediumButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.mediumButton, isSelected: false)
         self.largeButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.largeButton, isSelected: false)
         self.extraLargeButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.extraLargeButton, isSelected: false)
         self.babyButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.babyButton, isSelected: false)
         self.youngButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.youngButton, isSelected: false)
         self.adultButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.adultButton, isSelected: false)
         self.seniorButton.layer.cornerRadius = ButtonCornerRadius
+        self.updateButton(self.seniorButton, isSelected: false)
         self.findButton.layer.cornerRadius = ButtonCornerRadius
+    }
+    
+    private func updateButton(_ button: UIButton, isSelected: Bool) {
+        if isSelected {
+            button.layer.borderColor = UIColor.clear.cgColor
+            button.layer.borderWidth = 0
+            button.backgroundColor = UIColor.main
+            button.setTitleColor(UIColor.white, for: .normal)
+        } else {
+            button.layer.borderColor = UIColor.main.cgColor
+            button.layer.borderWidth = 1
+            button.backgroundColor = UIColor.white
+            button.setTitleColor(UIColor.main, for: .normal)
+        }
+    }
+    
+    private func hasValidFilters() -> Bool {
+        var genderSelected = false
+        var sizeSelected = false
+        var ageSelected = false
+        
+        if self.femaleButton.layer.borderWidth == 0 ||
+            self.maleButton.layer.borderWidth == 0 {
+            genderSelected = true
+        }
+        if self.extraSmallButton.layer.borderWidth == 0 ||
+            self.smallButton.layer.borderWidth == 0 ||
+            self.mediumButton.layer.borderWidth == 0 ||
+            self.largeButton.layer.borderWidth == 0 ||
+            self.extraLargeButton.layer.borderWidth == 0 {
+            sizeSelected = true
+        }
+        if self.babyButton.layer.borderWidth == 0 ||
+            self.youngButton.layer.borderWidth == 0 ||
+            self.adultButton.layer.borderWidth == 0 ||
+            self.seniorButton.layer.borderWidth == 0 {
+            ageSelected = true
+        }
+        
+        if genderSelected && sizeSelected && ageSelected {
+            return true
+        }
+        return false
     }
     
     private func updateForPetType() {
@@ -82,73 +136,79 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func filterTapped(_ sender: AnyObject) {
-        if let button = sender as? UIButton {
-            if button.layer.opacity == 1 {
-                button.layer.opacity = FilterDisabledOpacity
+        if let button = sender as? UIButton, let bgColor = button.backgroundColor {
+            if bgColor == UIColor.main {
+                self.updateButton(button, isSelected: false)
             } else {
-                button.layer.opacity = 1
+                self.updateButton(button, isSelected: true)
             }
         }
     }
     
     @IBAction func findTapped(_ sender: AnyObject) {
-        // pet type
-        if self.petTypeSegmentedControl.selectedSegmentIndex == 0 {
-            self.petType = .dog
+        if self.hasValidFilters() {
+            // pet type
+            if self.petTypeSegmentedControl.selectedSegmentIndex == 0 {
+                self.petType = .dog
+            } else {
+                self.petType = .cat
+            }
+            
+            // gender
+            self.genders.removeAll()
+            if self.femaleButton.layer.borderWidth == 0 {
+                self.genders.append(.female)
+            }
+            if self.maleButton.layer.borderWidth == 0 {
+                self.genders.append(.male)
+            }
+            
+            // size
+            self.sizes.removeAll()
+            if self.extraSmallButton.layer.borderWidth == 0 {
+                self.sizes.append(.extraSmall)
+            }
+            if self.smallButton.layer.borderWidth == 0 {
+                self.sizes.append(.small)
+            }
+            if self.mediumButton.layer.borderWidth == 0 {
+                self.sizes.append(.medium)
+            }
+            if self.largeButton.layer.borderWidth == 0 {
+                self.sizes.append(.large)
+            }
+            if self.extraLargeButton.layer.borderWidth == 0 {
+                self.sizes.append(.extraLarge)
+            }
+            
+            // age
+            self.ages.removeAll()
+            if self.babyButton.layer.borderWidth == 0 {
+                self.ages.append(.baby)
+            }
+            if self.youngButton.layer.borderWidth == 0 {
+                self.ages.append(.young)
+            }
+            if self.adultButton.layer.borderWidth == 0 {
+                self.ages.append(.adult)
+            }
+            if self.seniorButton.layer.borderWidth == 0 {
+                self.ages.append(.senior)
+            }
+            
+            let listViewController = PetListViewController.createControllerFor(listType: .find)
+            listViewController.type = self.petType
+            listViewController.genders = self.genders
+            listViewController.sizes = self.sizes
+            listViewController.ages = self.ages
+            listViewController.titleString = "Pet Results"
+            listViewController.showBackButton = true
+            self.navigationController?.pushViewController(listViewController, animated: true)
         } else {
-            self.petType = .cat
+            let alert = UIAlertController(title: "Invalid Filters", message: "You must select at least one GENDER, one SIZE, and one AGE.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
-        
-        // gender
-        self.genders.removeAll()
-        if self.femaleButton.layer.opacity == 1 {
-            self.genders.append(.female)
-        }
-        if self.maleButton.layer.opacity == 1 {
-            self.genders.append(.male)
-        }
-        
-        // size
-        self.sizes.removeAll()
-        if self.extraSmallButton.layer.opacity == 1 {
-            self.sizes.append(.extraSmall)
-        }
-        if self.smallButton.layer.opacity == 1 {
-            self.sizes.append(.small)
-        }
-        if self.mediumButton.layer.opacity == 1 {
-            self.sizes.append(.medium)
-        }
-        if self.largeButton.layer.opacity == 1 {
-            self.sizes.append(.large)
-        }
-        if self.extraLargeButton.layer.opacity == 1 {
-            self.sizes.append(.extraLarge)
-        }
-        
-        // age
-        self.ages.removeAll()
-        if self.babyButton.layer.opacity == 1 {
-            self.ages.append(.baby)
-        }
-        if self.youngButton.layer.opacity == 1 {
-            self.ages.append(.young)
-        }
-        if self.adultButton.layer.opacity == 1 {
-            self.ages.append(.adult)
-        }
-        if self.seniorButton.layer.opacity == 1 {
-            self.ages.append(.senior)
-        }
-        
-        let listViewController = PetListViewController.createControllerFor(listType: .find)
-        listViewController.type = self.petType
-        listViewController.genders = self.genders
-        listViewController.sizes = self.sizes
-        listViewController.ages = self.ages
-        listViewController.titleString = "Pet Results"
-        listViewController.showBackButton = true
-        self.navigationController?.pushViewController(listViewController, animated: true)
     }
     
 }
