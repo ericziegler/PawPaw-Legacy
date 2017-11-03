@@ -62,6 +62,15 @@ class PetListViewController: UIViewController {
         NotificationCenter.default.addObserver(forName: LocationUpdateSuccessNotification, object: nil, queue: nil, using: locationUpdateDidSucceed)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.listType == .favorite {
+            self.petList = PetList()
+            self.petList.loadFavorites()
+            self.listView.reloadData()
+        }
+    }
+    
     private func setupNavBar() {
         self.backButton.isHidden = !self.showBackButton
         self.locationButton.isHidden = !self.showLocationButton

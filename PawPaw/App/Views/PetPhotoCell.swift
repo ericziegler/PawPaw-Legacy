@@ -13,12 +13,23 @@ import UIKit
 let PetPhotoCellId = "PetPhotoCellId"
 let PetPhotoCellHeight: CGFloat = 215
 
+// MARK: Protocol
+
+protocol PetPhotoCellDelegate {
+    func favoriteTappedFor(cell: PetPhotoCell, isFavorited: Bool)
+    func photosTappedFor(cell: PetPhotoCell)
+}
+
 class PetPhotoCell: UITableViewCell {
     
     // MARK: Properties
     
     @IBOutlet var photoImageView: UIImageView!
     @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var favoriteButton: UIButton!
+    
+    var delegate: PetPhotoCellDelegate?
+    private var pet: Pet?
     
     // MARK: Init
     
@@ -28,12 +39,40 @@ class PetPhotoCell: UITableViewCell {
         self.nameLabel.text = nil
     }
     
+    // MARK: Actions
+    
+    @IBAction func favoriteTapped(_ sender: AnyObject) {
+        if let pet = self.pet {
+            pet.isFavorited = !pet.isFavorited
+            self.updateFavoriteButtonFor(pet: pet)
+            if let delegate = self.delegate {
+                delegate.favoriteTappedFor(cell: self, isFavorited: pet.isFavorited)
+            }
+        }
+    }
+    
+    @IBAction func photosTapped(_ sender: AnyObject) {
+        if let delegate = self.delegate {
+            delegate.photosTappedFor(cell: self)
+        }
+    }
+    
     // MARK: Layout
     
     func layoutFor(pet: Pet) {
+        self.pet = pet
+        self.updateFavoriteButtonFor(pet: pet)
         self.nameLabel.text = pet.name
         if let photoURL = pet.photoURLs.first {
             self.photoImageView.loadImageUsingCache(withUrl: photoURL)
+        }
+    }
+    
+    func updateFavoriteButtonFor(pet: Pet) {
+        if pet.isFavorited {
+            self.favoriteButton.setImage(UIImage(named: "FavoriteFilled"), for: .normal)
+        } else {
+            self.favoriteButton.setImage(UIImage(named: "FavoriteOutline"), for: .normal)
         }
     }
     

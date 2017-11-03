@@ -1251,10 +1251,38 @@
                                                                 <constraint firstAttribute="height" constant="32" id="WLy-Nx-3Lj"/>
                                                             </constraints>
                                                         </view>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxr-G6-Fyk">
+                                                            <rect key="frame" x="8" y="8" width="40" height="40"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="1xb-L7-7tk"/>
+                                                                <constraint firstAttribute="height" constant="40" id="avu-pF-NFX"/>
+                                                            </constraints>
+                                                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <state key="normal" image="FavoriteOutline"/>
+                                                            <connections>
+                                                                <action selector="favoriteTapped:" destination="kgg-6K-P1u" eventType="touchUpInside" id="cdA-sJ-d5t"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7MD-wB-MlU">
+                                                            <rect key="frame" x="327" y="8" width="40" height="40"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="UoS-Kc-hca"/>
+                                                                <constraint firstAttribute="height" constant="40" id="zH0-Fe-NWx"/>
+                                                            </constraints>
+                                                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <state key="normal" image="Photos"/>
+                                                            <connections>
+                                                                <action selector="photosTapped:" destination="kgg-6K-P1u" eventType="touchUpInside" id="gbj-lS-RYH"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
                                                     <constraints>
+                                                        <constraint firstItem="Kxr-G6-Fyk" firstAttribute="leading" secondItem="tma-uO-fh1" secondAttribute="leading" constant="8" id="9hR-M3-8Ne"/>
+                                                        <constraint firstItem="7MD-wB-MlU" firstAttribute="top" secondItem="tma-uO-fh1" secondAttribute="top" constant="8" id="EQ0-aH-omo"/>
                                                         <constraint firstAttribute="bottom" secondItem="55Y-g7-QdT" secondAttribute="bottom" constant="8" id="Vac-EM-3CD"/>
+                                                        <constraint firstItem="Kxr-G6-Fyk" firstAttribute="top" secondItem="tma-uO-fh1" secondAttribute="top" constant="8" id="WHj-8a-muI"/>
+                                                        <constraint firstAttribute="trailing" secondItem="7MD-wB-MlU" secondAttribute="trailing" constant="8" id="pGb-2r-xIs"/>
                                                         <constraint firstItem="55Y-g7-QdT" firstAttribute="width" relation="lessThanOrEqual" secondItem="tma-uO-fh1" secondAttribute="width" multiplier="0.8" id="pKR-YD-DNS"/>
                                                         <constraint firstItem="55Y-g7-QdT" firstAttribute="leading" secondItem="tma-uO-fh1" secondAttribute="leading" id="qK2-mq-LiU"/>
                                                     </constraints>
@@ -1272,6 +1300,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="favoriteButton" destination="Kxr-G6-Fyk" id="kF0-DH-Aqc"/>
                                             <outlet property="nameLabel" destination="m7U-xp-Xbi" id="cXt-9E-Lx6"/>
                                             <outlet property="photoImageView" destination="Rv8-QV-sEr" id="7hj-f3-bh9"/>
                                         </connections>
@@ -1660,9 +1689,11 @@
         <image name="Close" width="17" height="16"/>
         <image name="Email" width="29" height="18"/>
         <image name="FavoriteNeutral" width="22" height="20"/>
+        <image name="FavoriteOutline" width="40" height="36"/>
         <image name="FindNeutral" width="22" height="22"/>
         <image name="HomeAccent" width="30" height="30"/>
         <image name="Location" width="30" height="30"/>
+        <image name="Photos" width="36" height="36"/>
         <image name="ShelterNeutral" width="29" height="20"/>
     </resources>
 </document>

@@ -30,6 +30,7 @@ let PetSizeCacheKey = "PetSizeCacheKey"
 let PetHasShotsCacheKey = "PetHasShotsCacheKey"
 let PetIsHouseTrainedCacheKey = "PetIsHouseTrainedCacheKey"
 let PetIsAlteredCacheKey = "PetIsAlteredCacheKey"
+let PetIsFavoritedCacheKey = "PetIsFavoritedCacheKey"
 
 class Pet: NSObject, NSCoding {
 
@@ -90,85 +91,86 @@ class Pet: NSObject, NSCoding {
     }
     
     required init?(coder decoder: NSCoder) {
-        if let cachedIdentifier = decoder.value(forKey: PetIdentifierCacheKey) as? String {
+        if let cachedIdentifier = decoder.decodeObject(forKey: PetIdentifierCacheKey) as? String {
             self.identifier = cachedIdentifier
         }
-        if let cachedShelterId = decoder.value(forKey: PetShelterIdCacheKey) as? String {
+        if let cachedShelterId = decoder.decodeObject(forKey: PetShelterIdCacheKey) as? String {
             self.shelterId = cachedShelterId
         }
-        if let cachedShelterAddress = decoder.value(forKey: PetShelterAddressCacheKey) as? String {
+        if let cachedShelterAddress = decoder.decodeObject(forKey: PetShelterAddressCacheKey) as? String {
             self.shelterAddress = cachedShelterAddress
         }
-        if let cachedShelterCity = decoder.value(forKey: PetShelterCityCacheKey) as? String {
+        if let cachedShelterCity = decoder.decodeObject(forKey: PetShelterCityCacheKey) as? String {
             self.shelterCity = cachedShelterCity
         }
-        if let cachedShelterState = decoder.value(forKey: PetShelterStateCacheKey) as? String {
+        if let cachedShelterState = decoder.decodeObject(forKey: PetShelterStateCacheKey) as? String {
             self.shelterState = cachedShelterState
         }
-        if let cachedShelterZip = decoder.value(forKey: PetShelterZipCacheKey) as? String {
+        if let cachedShelterZip = decoder.decodeObject(forKey: PetShelterZipCacheKey) as? String {
             self.shelterZip = cachedShelterZip
         }
-        if let cachedShelterPhone = decoder.value(forKey: PetShelterPhoneCacheKey) as? String {
+        if let cachedShelterPhone = decoder.decodeObject(forKey: PetShelterPhoneCacheKey) as? String {
             self.shelterPhone = cachedShelterPhone
         }
-        if let cachedShelterFormattedPhone = decoder.value(forKey: PetShelterFormattedPhoneCacheKey) as? String {
+        if let cachedShelterFormattedPhone = decoder.decodeObject(forKey: PetShelterFormattedPhoneCacheKey) as? String {
             self.shelterFormattedPhone = cachedShelterFormattedPhone
         }
-        if let cachedShelterEmail = decoder.value(forKey: PetShelterEmailCacheKey) as? String {
+        if let cachedShelterEmail = decoder.decodeObject(forKey: PetShelterEmailCacheKey) as? String {
             self.shelterEmail = cachedShelterEmail
         }
-        if let cachedPhotoData = decoder.value(forKey: PetPhotoURLsCacheKey) as? Data, let cachedPhotoURLs = NSKeyedUnarchiver.unarchiveObject(with: cachedPhotoData) as? [String] {
+        if let cachedPhotoData = decoder.decodeObject(forKey: PetPhotoURLsCacheKey) as? Data, let cachedPhotoURLs = NSKeyedUnarchiver.unarchiveObject(with: cachedPhotoData) as? [String] {
             self.photoURLs = cachedPhotoURLs
         }
-        if let cachedName = decoder.value(forKey: PetNameCacheKey) as? String {
+        if let cachedName = decoder.decodeObject(forKey: PetNameCacheKey) as? String {
             self.name = cachedName
         }
-        if let cachedBreed = decoder.value(forKey: PetBreedCacheKey) as? String {
+        if let cachedBreed = decoder.decodeObject(forKey: PetBreedCacheKey) as? String {
             self.breed = cachedBreed
         }
-        if let cachedStory = decoder.value(forKey: PetStoryCacheKey) as? String {
+        if let cachedStory = decoder.decodeObject(forKey: PetStoryCacheKey) as? String {
             self.story = cachedStory
         }
-        if let petTypeValue = decoder.value(forKey: PetTypeCacheKey) as? String, let cachedType = PetType(rawValue: petTypeValue) {
+        if let petTypeValue = decoder.decodeObject(forKey: PetTypeCacheKey) as? String, let cachedType = PetType(rawValue: petTypeValue) {
             self.petType = cachedType
         }
-        if let ageValue = decoder.value(forKey: PetAgeCacheKey) as? String, let cachedAge = Age(rawValue: ageValue) {
+        if let ageValue = decoder.decodeObject(forKey: PetAgeCacheKey) as? String, let cachedAge = Age(rawValue: ageValue) {
             self.age = cachedAge
         }
-        if let genderValue = decoder.value(forKey: PetGenderCacheKey) as? String, let cachedGender = Gender(rawValue: genderValue) {
+        if let genderValue = decoder.decodeObject(forKey: PetGenderCacheKey) as? String, let cachedGender = Gender(rawValue: genderValue) {
             self.gender = cachedGender
         }
-        if let sizeValue = decoder.value(forKey: PetSizeCacheKey) as? String, let cachedSize = Size(rawValue: sizeValue) {
+        if let sizeValue = decoder.decodeObject(forKey: PetSizeCacheKey) as? String, let cachedSize = Size(rawValue: sizeValue) {
             self.size = cachedSize
         }
         self.hasShots = decoder.decodeBool(forKey: PetHasShotsCacheKey)
         self.isHouseTrained = decoder.decodeBool(forKey: PetIsHouseTrainedCacheKey)
         self.isAltered = decoder.decodeBool(forKey: PetIsAlteredCacheKey)
+        self.isFavorited = decoder.decodeBool(forKey: PetIsFavoritedCacheKey)
     }
     
     func encode(with encoder: NSCoder) {
-        encoder.setValue(self.identifier, forKey: PetIdentifierCacheKey)
-        encoder.setValue(self.shelterId, forKey: PetShelterIdCacheKey)
-        encoder.setValue(self.shelterAddress, forKey: PetShelterAddressCacheKey)
-        encoder.setValue(self.shelterCity, forKey: PetShelterCityCacheKey)
-        encoder.setValue(self.shelterState, forKey: PetShelterStateCacheKey)
-        encoder.setValue(self.shelterZip, forKey: PetShelterZipCacheKey)
-        encoder.setValue(self.shelterPhone, forKey: PetShelterPhoneCacheKey)
-        encoder.setValue(self.shelterFormattedPhone, forKey: PetShelterFormattedPhoneCacheKey)
-        encoder.setValue(self.shelterEmail, forKey: PetShelterEmailCacheKey)
+        encoder.encode(self.identifier, forKey: PetIdentifierCacheKey)
+        encoder.encode(self.shelterId, forKey: PetShelterIdCacheKey)
+        encoder.encode(self.shelterAddress, forKey: PetShelterAddressCacheKey)
+        encoder.encode(self.shelterCity, forKey: PetShelterCityCacheKey)
+        encoder.encode(self.shelterState, forKey: PetShelterStateCacheKey)
+        encoder.encode(self.shelterZip, forKey: PetShelterZipCacheKey)
+        encoder.encode(self.shelterPhone, forKey: PetShelterPhoneCacheKey)
+        encoder.encode(self.shelterFormattedPhone, forKey: PetShelterFormattedPhoneCacheKey)
+        encoder.encode(self.shelterEmail, forKey: PetShelterEmailCacheKey)
         let photoData = NSKeyedArchiver.archivedData(withRootObject: self.photoURLs)
-        encoder.setValue(photoData, forKey: PetPhotoURLsCacheKey)
-        encoder.setValue(self.name, forKey: PetNameCacheKey)
-        encoder.setValue(self.breed, forKey: PetBreedCacheKey)
-        encoder.setValue(self.story, forKey: PetStoryCacheKey)
-        encoder.setValue(self.petType.rawValue, forKey: PetTypeCacheKey)
-        encoder.setValue(self.age.rawValue, forKey: PetAgeCacheKey)
-        encoder.setValue(self.gender.rawValue, forKey: PetGenderCacheKey)
-        encoder.setValue(self.size.rawValue, forKey: PetSizeCacheKey)
-        encoder.setValue(self.hasShots, forKey: PetHasShotsCacheKey)
-        encoder.setValue(self.isHouseTrained, forKey: PetIsHouseTrainedCacheKey)
-        encoder.setValue(self.isAltered, forKey: PetIsAlteredCacheKey)
-
+        encoder.encode(photoData, forKey: PetPhotoURLsCacheKey)
+        encoder.encode(self.name, forKey: PetNameCacheKey)
+        encoder.encode(self.breed, forKey: PetBreedCacheKey)
+        encoder.encode(self.story, forKey: PetStoryCacheKey)
+        encoder.encode(self.petType.rawValue, forKey: PetTypeCacheKey)
+        encoder.encode(self.age.rawValue, forKey: PetAgeCacheKey)
+        encoder.encode(self.gender.rawValue, forKey: PetGenderCacheKey)
+        encoder.encode(self.size.rawValue, forKey: PetSizeCacheKey)
+        encoder.encode(self.hasShots, forKey: PetHasShotsCacheKey)
+        encoder.encode(self.isHouseTrained, forKey: PetIsHouseTrainedCacheKey)
+        encoder.encode(self.isAltered, forKey: PetIsAlteredCacheKey)
+        encoder.encode(self.isFavorited, forKey: PetIsFavoritedCacheKey)
     }
     
     // MARK: Loading

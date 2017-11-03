@@ -101,6 +101,7 @@ extension PetDetailViewController: UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PetPhotoCellId, for: indexPath) as! PetPhotoCell
             cell.layoutFor(pet: self.pet)
+            cell.delegate = self
             return cell
         }
         else if indexPath.section == 1 {
@@ -217,6 +218,26 @@ extension PetDetailViewController: MFMailComposeViewControllerDelegate {
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+extension PetDetailViewController: PetPhotoCellDelegate {
+
+    func favoriteTappedFor(cell: PetPhotoCell, isFavorited: Bool) {
+        self.pet.isFavorited = isFavorited
+        let petList = PetList()
+        petList.loadFavorites()
+        
+        if isFavorited {
+            petList.addFavorite(pet: pet)
+        } else {
+            petList.removeFavorite(pet: pet)
+        }
+    }
+    
+    func photosTappedFor(cell: PetPhotoCell) {
+        
     }
     
 }
