@@ -237,7 +237,8 @@ extension PetDetailViewController: PetPhotoCellDelegate {
     }
     
     func photosTappedFor(cell: PetPhotoCell) {
-        
+        let photoVC = PhotoViewController.createControllerFor(photos: self.pet.photoURLs, title: self.pet.name)
+        self.present(photoVC, animated: true, completion: nil)
     }
     
 }
