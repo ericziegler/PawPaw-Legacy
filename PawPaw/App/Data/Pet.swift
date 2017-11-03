@@ -17,6 +17,7 @@ let PetShelterCityCacheKey = "PetShelterCityCacheKey"
 let PetShelterStateCacheKey = "PetShelterStateCacheKey"
 let PetShelterZipCacheKey = "PetShelterZipCacheKey"
 let PetShelterPhoneCacheKey = "PetShelterPhoneCacheKey"
+let PetShelterFormattedPhoneCacheKey = "PetShelterFormattedPhoneCacheKey"
 let PetShelterEmailCacheKey = "PetShelterEmailCacheKey"
 let PetPhotoURLsCacheKey = "PetPhotoURLsCacheKey"
 let PetNameCacheKey = "PetNameCacheKey"
@@ -41,6 +42,7 @@ class Pet: NSObject, NSCoding {
     var shelterState: String = ""
     var shelterZip: String = ""
     var shelterPhone: String = ""
+    var shelterFormattedPhone: String = ""
     var shelterEmail: String = ""
     var photoURLs: [String] = [String]()
     var name: String = ""
@@ -57,7 +59,7 @@ class Pet: NSObject, NSCoding {
     
     var alteredDisplayText: String {
         get {
-            var result = "N/A"
+            var result = "Unknown"
             
             if self.isAltered {
                 if self.gender == .male {
@@ -109,6 +111,9 @@ class Pet: NSObject, NSCoding {
         if let cachedShelterPhone = decoder.value(forKey: PetShelterPhoneCacheKey) as? String {
             self.shelterPhone = cachedShelterPhone
         }
+        if let cachedShelterFormattedPhone = decoder.value(forKey: PetShelterFormattedPhoneCacheKey) as? String {
+            self.shelterFormattedPhone = cachedShelterFormattedPhone
+        }
         if let cachedShelterEmail = decoder.value(forKey: PetShelterEmailCacheKey) as? String {
             self.shelterEmail = cachedShelterEmail
         }
@@ -149,6 +154,7 @@ class Pet: NSObject, NSCoding {
         encoder.setValue(self.shelterState, forKey: PetShelterStateCacheKey)
         encoder.setValue(self.shelterZip, forKey: PetShelterZipCacheKey)
         encoder.setValue(self.shelterPhone, forKey: PetShelterPhoneCacheKey)
+        encoder.setValue(self.shelterFormattedPhone, forKey: PetShelterFormattedPhoneCacheKey)
         encoder.setValue(self.shelterEmail, forKey: PetShelterEmailCacheKey)
         let photoData = NSKeyedArchiver.archivedData(withRootObject: self.photoURLs)
         encoder.setValue(photoData, forKey: PetPhotoURLsCacheKey)
@@ -252,8 +258,47 @@ class Pet: NSObject, NSCoding {
                 self.shelterEmail = parsedEmail
             }
             if let parsedPhone = contactJSON.stringFor(key: "phone") {
+                self.shelterFormattedPhone = parsedPhone
                 self.shelterPhone = parsedPhone.formattedPhone()
             }
+        }
+    }
+    
+    var formattedAddress: String {
+        get {
+            var result = ""
+            
+            if self.shelterAddress.characters.count > 0 {
+                result += self.shelterAddress
+            }
+            if self.shelterCity.characters.count > 0 {
+                if result.characters.count > 0 {
+                    result += "\n"
+                }
+                result += self.shelterCity
+            }
+            if self.shelterState.characters.count > 0 {
+                if self.shelterCity.characters.count > 0 {
+                    result += ", \(self.shelterState)"
+                } else {
+                    if result.characters.count > 0 {
+                        result += "\n"
+                    }
+                    result += self.shelterState
+                }
+            }
+            if self.shelterZip.characters.count > 0 {
+                if self.shelterCity.characters.count > 0 || self.shelterState.characters.count > 0 {
+                    result += " \(self.shelterZip)"
+                } else {
+                    if result.characters.count > 0 {
+                        result += "\n"
+                    }
+                    result += self.shelterZip
+                }
+            }
+            
+            return result
         }
     }
     

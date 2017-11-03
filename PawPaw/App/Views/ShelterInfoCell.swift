@@ -40,13 +40,13 @@ class ShelterInfoCell: UITableViewCell {
         if value.characters.count > 0 {
             var image: UIImage?
             
-            if heading.lowercased() == "address:" {
+            if heading.lowercased() == "address:" || heading.lowercased() == "here's how to find me" {
                 image = UIImage(named: "Address")
             }
-            else if heading.lowercased() == "email:" {
+            else if heading.lowercased() == "email:" || heading.lowercased() == "email about me" {
                 image = UIImage(named: "Email")
             }
-            else if heading.lowercased() == "phone:" {
+            else if heading.lowercased() == "phone:" || heading.lowercased() == "call about me" {
                 image = UIImage(named: "Phone")
             }
             self.iconImageView.image = image

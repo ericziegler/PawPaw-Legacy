@@ -31,7 +31,7 @@ enum Size: String {
         get {
             switch self {
             case .unknown:
-                return "N/A"
+                return "Unknown"
             case .extraSmall:
                 return "Extra Small"
             case .small:
@@ -86,7 +86,7 @@ enum Age: String {
         else if self == .senior {
             return "Senior"
         }
-        return ""
+        return "Unknown"
     }
     
     static var allAges: [Age] {
@@ -106,7 +106,7 @@ enum Gender: String {
     var formattedValue: String {
         switch self {
         case .unknown:
-            return "N/A"
+            return "Unknown"
         case .male:
             return "Male"
         case .female:
