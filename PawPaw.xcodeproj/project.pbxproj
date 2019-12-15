@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		07072D4B1FAB246200F74F4A /* String+PawPaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07072D4A1FAB246200F74F4A /* String+PawPaw.swift */; };
-		07072D4D1FAB25B100F74F4A /* NSRange+PawPaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07072D4C1FAB25B100F74F4A /* NSRange+PawPaw.swift */; };
 		07072D4F1FAB34D000F74F4A /* UIStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07072D4E1FAB34D000F74F4A /* UIStyling.swift */; };
 		071827831FAC8BE900C85FA5 /* PetPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071827821FAC8BE900C85FA5 /* PetPhotoCell.swift */; };
 		071827871FAC8C0200C85FA5 /* PetStoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071827861FAC8C0200C85FA5 /* PetStoryCell.swift */; };
@@ -52,11 +51,15 @@
 		07FEF4F71FAA84DE00E4EEB2 /* PetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF4F61FAA84DE00E4EEB2 /* PetDetailViewController.swift */; };
 		07FEF4F91FAA850400E4EEB2 /* ShelterDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF4F81FAA850400E4EEB2 /* ShelterDetailViewController.swift */; };
 		07FEF4FA1FAA8F3C00E4EEB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07E460341FA5F92B00E77542 /* Main.storyboard */; };
+		787993C723A66E340011B11F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787993C623A66E340011B11F /* BaseViewController.swift */; };
+		787993C923A66E420011B11F /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787993C823A66E420011B11F /* BaseTableViewController.swift */; };
+		787993CB23A66E550011B11F /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787993CA23A66E550011B11F /* BaseNavigationController.swift */; };
+		787993CD23A66ED40011B11F /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787993CC23A66ED40011B11F /* UIKitExtensions.swift */; };
+		787993CF23A66EDD0011B11F /* FoundationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787993CE23A66EDD0011B11F /* FoundationExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		07072D4A1FAB246200F74F4A /* String+PawPaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PawPaw.swift"; sourceTree = "<group>"; };
-		07072D4C1FAB25B100F74F4A /* NSRange+PawPaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+PawPaw.swift"; sourceTree = "<group>"; };
 		07072D4E1FAB34D000F74F4A /* UIStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyling.swift; sourceTree = "<group>"; };
 		071827821FAC8BE900C85FA5 /* PetPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetPhotoCell.swift; sourceTree = "<group>"; };
 		071827861FAC8C0200C85FA5 /* PetStoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetStoryCell.swift; sourceTree = "<group>"; };
@@ -102,6 +105,11 @@
 		07FEF4F41FAA84A500E4EEB2 /* ShelterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelterListViewController.swift; sourceTree = "<group>"; };
 		07FEF4F61FAA84DE00E4EEB2 /* PetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetDetailViewController.swift; sourceTree = "<group>"; };
 		07FEF4F81FAA850400E4EEB2 /* ShelterDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelterDetailViewController.swift; sourceTree = "<group>"; };
+		787993C623A66E340011B11F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		787993C823A66E420011B11F /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
+		787993CA23A66E550011B11F /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		787993CC23A66ED40011B11F /* UIKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = "<group>"; };
+		787993CE23A66EDD0011B11F /* FoundationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,12 +204,13 @@
 		07E460451FA5F95000E77542 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				787993CC23A66ED40011B11F /* UIKitExtensions.swift */,
+				787993CE23A66EDD0011B11F /* FoundationExtensions.swift */,
 				07F62BF81FA7AE5900E757F9 /* Error+PawPaw.swift */,
 				07F62BFF1FA7B6FF00E757F9 /* SwiftyJSON+PawPaw.swift */,
 				075D59D71FAA6F3100613AB4 /* UIImageView+PawPaw.swift */,
 				075D59E21FAA821200613AB4 /* UIColor+Extensions.swift */,
 				07072D4A1FAB246200F74F4A /* String+PawPaw.swift */,
-				07072D4C1FAB25B100F74F4A /* NSRange+PawPaw.swift */,
 				07072D4E1FAB34D000F74F4A /* UIStyling.swift */,
 				072694BF1FAB5B6C00F0D0BC /* MutableCollection+PawPaw.swift */,
 				0779BF1E1FABAE57001BAE45 /* TopAlignedLabel.swift */,
@@ -227,6 +236,7 @@
 		07E460471FA5F95A00E77542 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				787993C523A66E1E0011B11F /* BaseControllers */,
 				07E460341FA5F92B00E77542 /* Main.storyboard */,
 				075D59D91FAA6F6700613AB4 /* MainViewController.swift */,
 				075D59DB1FAA71CD00613AB4 /* LocationViewController.swift */,
@@ -255,6 +265,16 @@
 				07F62BFB1FA7B1CB00E757F9 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		787993C523A66E1E0011B11F /* BaseControllers */ = {
+			isa = PBXGroup;
+			children = (
+				787993CA23A66E550011B11F /* BaseNavigationController.swift */,
+				787993C623A66E340011B11F /* BaseViewController.swift */,
+				787993C823A66E420011B11F /* BaseTableViewController.swift */,
+			);
+			path = BaseControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,10 +350,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				07F62C0C1FAA3A2200E757F9 /* PetEnums.swift in Sources */,
+				787993C923A66E420011B11F /* BaseTableViewController.swift in Sources */,
 				071827911FACAE2B00C85FA5 /* GTZoomableImageView.swift in Sources */,
 				075D59DE1FAA723F00613AB4 /* LocationManager.swift in Sources */,
 				07F62BF71FA7AAD700E757F9 /* SwiftyJSON.swift in Sources */,
 				07FEF4F71FAA84DE00E4EEB2 /* PetDetailViewController.swift in Sources */,
+				787993C723A66E340011B11F /* BaseViewController.swift in Sources */,
 				07E460501FA5F9DC00E77542 /* Shelter.swift in Sources */,
 				07F62C001FA7B6FF00E757F9 /* SwiftyJSON+PawPaw.swift in Sources */,
 				072694C01FAB5B6C00F0D0BC /* MutableCollection+PawPaw.swift in Sources */,
@@ -347,6 +369,7 @@
 				07FEF4F11FAA842F00E4EEB2 /* BreedViewController.swift in Sources */,
 				0779BF1F1FABAE57001BAE45 /* TopAlignedLabel.swift in Sources */,
 				07E4604A1FA5F9C900E77542 /* PetList.swift in Sources */,
+				787993CF23A66EDD0011B11F /* FoundationExtensions.swift in Sources */,
 				07E460311FA5F92B00E77542 /* AppDelegate.swift in Sources */,
 				075D59D81FAA6F3100613AB4 /* UIImageView+PawPaw.swift in Sources */,
 				0718278D1FACAAB900C85FA5 /* PhotoCell.swift in Sources */,
@@ -356,6 +379,7 @@
 				0779BF1D1FABAA4B001BAE45 /* ShelterInfoCell.swift in Sources */,
 				07E4604E1FA5F9D600E77542 /* ShelterList.swift in Sources */,
 				07072D4B1FAB246200F74F4A /* String+PawPaw.swift in Sources */,
+				787993CD23A66ED40011B11F /* UIKitExtensions.swift in Sources */,
 				0718278B1FAC8E8800C85FA5 /* PetContactHeaderCell.swift in Sources */,
 				071827831FAC8BE900C85FA5 /* PetPhotoCell.swift in Sources */,
 				07F62BF91FA7AE5900E757F9 /* Error+PawPaw.swift in Sources */,
@@ -367,7 +391,7 @@
 				072694C21FAB5C5200F0D0BC /* BreedCell.swift in Sources */,
 				07FEF4F51FAA84A500E4EEB2 /* ShelterListViewController.swift in Sources */,
 				075D59DC1FAA71CD00613AB4 /* LocationViewController.swift in Sources */,
-				07072D4D1FAB25B100F74F4A /* NSRange+PawPaw.swift in Sources */,
+				787993CB23A66E550011B11F /* BaseNavigationController.swift in Sources */,
 				072694BE1FAB517300F0D0BC /* PetCell.swift in Sources */,
 				075D59E11FAA7B1500613AB4 /* LoadingView.swift in Sources */,
 			);
@@ -508,13 +532,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = MJA8334VZT;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zigabytes.PawPaw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -525,13 +551,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = MJA8334VZT;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zigabytes.PawPaw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
