@@ -12,7 +12,7 @@ import UIKit
 
 let ShelterListViewId = "ShelterListViewId"
 
-class ShelterListViewController: UIViewController {
+class ShelterListViewController: BaseViewController {
     
     // MARK: Properties
     

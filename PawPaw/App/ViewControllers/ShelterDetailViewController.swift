@@ -14,7 +14,7 @@ import MapKit
 
 let ShelterDetailViewId = "ShelterDetailViewId"
 
-class ShelterDetailViewController: UIViewController {
+class ShelterDetailViewController: BaseViewController {
     
     // MARK: Properties
     
@@ -32,10 +32,6 @@ class ShelterDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     // MARK: Actions
@@ -59,7 +55,7 @@ class ShelterDetailViewController: UIViewController {
     }
     
     func performCall() {
-        if self.shelter.phone.characters.count > 0 {
+        if self.shelter.phone.count > 0 {
             if let url = URL(string: "tel://\(self.shelter.phone)"), UIApplication.shared.canOpenURL(url) {
                 let alert = UIAlertController(title: "Would you like to call \(self.shelter.formattedPhone)?", message: "This will call \(self.shelter.name)", preferredStyle: .alert)
                 let yesAction = UIAlertAction(title: "Yes", style: .default) { (action) in
@@ -77,7 +73,7 @@ class ShelterDetailViewController: UIViewController {
     }
     
     func performEmail() {
-        if MFMailComposeViewController.canSendMail(), self.shelter.email.characters.count > 0 {
+        if MFMailComposeViewController.canSendMail(), self.shelter.email.count > 0 {
             let mailVC = MFMailComposeViewController()
             mailVC.mailComposeDelegate = self
             mailVC.setToRecipients([self.shelter.email])

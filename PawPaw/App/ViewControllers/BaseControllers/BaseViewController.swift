@@ -1,9 +1,21 @@
 //
 //  BaseViewController.swift
-//  PawPaw
-//
-//  Created by Eric Ziegler on 12/15/19.
-//  Copyright © 2019 zigabytes. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class BaseViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = .light
+        }
+        self.navigationController?.navigationBar.titleTextAttributes = navTitleTextAttributes()
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
+}

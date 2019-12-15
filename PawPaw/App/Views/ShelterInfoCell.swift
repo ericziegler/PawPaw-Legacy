@@ -37,7 +37,7 @@ class ShelterInfoCell: UITableViewCell {
         self.infoLabel.text = value
         
         self.iconImageView.image = nil
-        if value.characters.count > 0 {
+        if value.count > 0 {
             var image: UIImage?
             
             if heading.lowercased() == "address:" || heading.lowercased() == "here's how to find me" {

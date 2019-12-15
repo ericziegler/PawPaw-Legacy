@@ -13,7 +13,7 @@ import UIKit
 let FilterViewId = "FilterViewId"
 let FilterDisabledOpacity: Float = 0.45
 
-class FilterViewController: UIViewController {
+class FilterViewController: BaseViewController {
     
     // MARK: Properties
     

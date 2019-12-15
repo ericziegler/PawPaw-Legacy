@@ -12,7 +12,7 @@ import UIKit
 
 let PhotoViewId = "PhotoViewId"
 
-class PhotoViewController: UIViewController {
+class PhotoViewController: BaseViewController {
 
     // MARK: Properties
     
@@ -45,18 +45,12 @@ class PhotoViewController: UIViewController {
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        get {
-            return .lightContent
-        }
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         // Update flow layout
         let layout = self.photoCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: self.photoCollectionView.bounds.size.width, height: self.photoCollectionView.bounds.size.height)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0

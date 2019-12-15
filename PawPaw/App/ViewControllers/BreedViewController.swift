@@ -12,7 +12,7 @@ import UIKit
 
 let BreedViewId = "BreedViewId"
 
-class BreedViewController: UIViewController {
+class BreedViewController: BaseViewController {
     
     // MARK: Properties
     

@@ -14,7 +14,7 @@ import MapKit
 
 let PetDetailViewId = "PetDetailViewId"
 
-class PetDetailViewController: UIViewController {
+class PetDetailViewController: BaseViewController {
     
     // MARK: Properties
     
@@ -31,10 +31,6 @@ class PetDetailViewController: UIViewController {
         return viewController
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     // MARK: Actions
     
     @IBAction func backTapped(_ sender: AnyObject) {
@@ -44,7 +40,7 @@ class PetDetailViewController: UIViewController {
     // MARK: Convenience Methods
     
     func performCall() {
-        if self.pet.shelterPhone.characters.count > 0 {
+        if self.pet.shelterPhone.count > 0 {
             if let url = URL(string: "tel://\(self.pet.shelterPhone)"), UIApplication.shared.canOpenURL(url) {
                 let alert = UIAlertController(title: "Would you like to call about \(self.pet.shelterFormattedPhone)?", message: "This will call about \(self.pet.name)", preferredStyle: .alert)
                 let yesAction = UIAlertAction(title: "Yes", style: .default) { (action) in
@@ -62,7 +58,7 @@ class PetDetailViewController: UIViewController {
     }
     
     func performEmail() {
-        if MFMailComposeViewController.canSendMail(), self.pet.shelterEmail.characters.count > 0 {
+        if MFMailComposeViewController.canSendMail(), self.pet.shelterEmail.count > 0 {
             let mailVC = MFMailComposeViewController()
             mailVC.mailComposeDelegate = self
             mailVC.setToRecipients([self.pet.shelterEmail])
@@ -124,7 +120,7 @@ extension PetDetailViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: PetDetailCellId, for: indexPath) as! PetDetailCell
                 var value = "Unknown"
                 if indexPath.row == 1 {
-                    if self.pet.breed.characters.count > 0 {
+                    if self.pet.breed.count > 0 {
                         value = self.pet.breed
                     }
                     cell.layoutFor(infoType: "Breed", value: value)
@@ -162,12 +158,12 @@ extension PetDetailViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: ShelterInfoCellId, for: indexPath) as! ShelterInfoCell
             var contactInfo = "N/A"
             if indexPath.row == 0 {
-                if self.pet.shelterFormattedPhone.characters.count > 0 {
+                if self.pet.shelterFormattedPhone.count > 0 {
                     contactInfo = self.pet.shelterFormattedPhone
                 }
                 cell.layoutFor(heading: "Call about me", value: contactInfo)
             } else {
-                if self.pet.shelterEmail.characters.count > 0 {
+                if self.pet.shelterEmail.count > 0 {
                     contactInfo = self.pet.shelterEmail
                 }
                 cell.layoutFor(heading: "Email about me", value: contactInfo)
@@ -188,7 +184,7 @@ extension PetDetailViewController: UITableViewDelegate {
             if indexPath.row == 0 {
                 return PetContactHeaderCellHeight
             } else {
-                return UITableViewAutomaticDimension
+                return UITableView.automaticDimension
             }
         }
         else if indexPath.section == 2 {
@@ -238,6 +234,7 @@ extension PetDetailViewController: PetPhotoCellDelegate {
     
     func photosTappedFor(cell: PetPhotoCell) {
         let photoVC = PhotoViewController.createControllerFor(photos: self.pet.photoURLs, title: self.pet.name)
+        photoVC.modalPresentationStyle = .fullScreen
         self.present(photoVC, animated: true, completion: nil)
     }
     

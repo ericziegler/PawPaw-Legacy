@@ -18,7 +18,7 @@ enum MainViewTab: Int {
     case favorite
 }
 
-class MainViewController: UIViewController {
+class MainViewController: BaseViewController {
 
     // MARK: Properties
 
@@ -57,13 +57,10 @@ class MainViewController: UIViewController {
         
         if ZipManager.shared.zip == nil {
             let locationVC = LocationViewController.createController()
+            locationVC.modalPresentationStyle = .fullScreen
             locationVC.canShowCloseButton = false
             self.present(locationVC, animated: true, completion: nil)
         }
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     private func createViewControllers() {
@@ -132,9 +129,9 @@ class MainViewController: UIViewController {
         for curView in self.containerView.subviews {
             curView.removeFromSuperview()
         }
-        self.addChildViewController(viewController)
+        self.addChild(viewController)
         self.containerView.addSubview(viewController.view)
-        viewController.didMove(toParentViewController: self)
+        viewController.didMove(toParent: self)
         
         viewController.view.translatesAutoresizingMaskIntoConstraints = false
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[childView]|",

@@ -12,7 +12,7 @@ import UIKit
 
 let LocationViewId = "LocationViewId"
 
-class LocationViewController: UIViewController {
+class LocationViewController: BaseViewController {
 
     // MARK: Properties
     
@@ -60,10 +60,6 @@ class LocationViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     // MARK: Actions

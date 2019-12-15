@@ -47,7 +47,7 @@ extension String {
         result = result.replacingOccurrences(of: "z", with: "9")
         result = result.replacingOccurrences(of: "z", with: "9")
         
-        let range = NSMakeRange(0, result.characters.count)
+        let range = NSMakeRange(0, result.count)
         result = result.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression, range: range.toRange(result))
         
         return result

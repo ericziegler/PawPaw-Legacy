@@ -14,7 +14,7 @@ class LoadingView: UIView {
 
     // MARK: Properties
     
-    var loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+    var loadingIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.whiteLarge)
     
     // MARK: Init
     

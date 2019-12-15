@@ -77,7 +77,7 @@ class Pet: NSObject, NSCoding {
     
     var isValidPet: Bool {
         get {
-            if self.petType != .unknown && self.identifier.characters.count > 0 && self.shelterId.characters.count > 0 && self.name.characters.count > 0 && self.photoURLs.count > 0 {
+            if self.petType != .unknown && self.identifier.count > 0 && self.shelterId.count > 0 && self.name.count > 0 && self.photoURLs.count > 0 {
                 return true
             }
             return false
@@ -243,7 +243,7 @@ class Pet: NSObject, NSCoding {
             if let parsedAddress2 = contactJSON.stringFor(key: "address2") {
                 address2 = parsedAddress2
             }
-            if (address1.characters.count > 0 || address2.characters.count > 0) {
+            if (address1.count > 0 || address2.count > 0) {
                 self.shelterAddress = "\(address1) \(address2)"
             }
             
@@ -270,30 +270,30 @@ class Pet: NSObject, NSCoding {
         get {
             var result = ""
             
-            if self.shelterAddress.characters.count > 0 {
+            if self.shelterAddress.count > 0 {
                 result += self.shelterAddress
             }
-            if self.shelterCity.characters.count > 0 {
-                if result.characters.count > 0 {
+            if self.shelterCity.count > 0 {
+                if result.count > 0 {
                     result += "\n"
                 }
                 result += self.shelterCity
             }
-            if self.shelterState.characters.count > 0 {
-                if self.shelterCity.characters.count > 0 {
+            if self.shelterState.count > 0 {
+                if self.shelterCity.count > 0 {
                     result += ", \(self.shelterState)"
                 } else {
-                    if result.characters.count > 0 {
+                    if result.count > 0 {
                         result += "\n"
                     }
                     result += self.shelterState
                 }
             }
-            if self.shelterZip.characters.count > 0 {
-                if self.shelterCity.characters.count > 0 || self.shelterState.characters.count > 0 {
+            if self.shelterZip.count > 0 {
+                if self.shelterCity.count > 0 || self.shelterState.count > 0 {
                     result += " \(self.shelterZip)"
                 } else {
-                    if result.characters.count > 0 {
+                    if result.count > 0 {
                         result += "\n"
                     }
                     result += self.shelterZip

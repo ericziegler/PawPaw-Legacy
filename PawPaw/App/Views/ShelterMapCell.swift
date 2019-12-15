@@ -33,7 +33,7 @@ class ShelterMapCell: UITableViewCell {
     func layoutFor(shelter: Shelter) {
         self.shelterLabel.text = shelter.name
         self.map.centerCoordinate = shelter.coordinate
-        let viewRegion = MKCoordinateRegionMake(shelter.coordinate, MKCoordinateSpanMake(0.2, 0.2))
+        let viewRegion = MKCoordinateRegion(center: shelter.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
         let adjustedRegion = self.map.regionThatFits(viewRegion)
         self.map.region = adjustedRegion
         let annotation: MKPointAnnotation = MKPointAnnotation()

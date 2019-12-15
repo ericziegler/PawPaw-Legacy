@@ -22,7 +22,7 @@ enum PetListType: Int {
     case favorite
 }
 
-class PetListViewController: UIViewController {
+class PetListViewController: BaseViewController {
 
     // MARK: Properties
     
@@ -81,16 +81,12 @@ class PetListViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         // Update flow layout
         let layout = self.listView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         let squareSize = CGFloat((self.listView.bounds.size.width / 2.0) - 2)
         layout.itemSize = CGSize(width: squareSize, height: squareSize)
         layout.minimumInteritemSpacing = 0
@@ -106,6 +102,7 @@ class PetListViewController: UIViewController {
     @IBAction func locationTapped(_ sender: AnyObject) {
         let locationVC = LocationViewController.createController()
         locationVC.canShowCloseButton = true
+        locationVC.modalPresentationStyle = .fullScreen
         self.present(locationVC, animated: true, completion: nil)
     }
     

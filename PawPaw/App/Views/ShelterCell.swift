@@ -32,16 +32,16 @@ class ShelterCell: UITableViewCell {
     func layoutFor(shelter: Shelter) {
         self.nameLabel.text = shelter.name
         
-        if shelter.address.characters.count > 0 {
+        if shelter.address.count > 0 {
             self.contactLabel.text = shelter.address
         }
-        else if shelter.formattedPhone.characters.count > 0 {
+        else if shelter.formattedPhone.count > 0 {
             self.contactLabel.text = shelter.formattedPhone
         }
-        else if shelter.email.characters.count > 0 {
+        else if shelter.email.count > 0 {
             self.contactLabel.text = shelter.email
         }
-        else if shelter.city.characters.count > 0 && shelter.state.characters.count > 0 {
+        else if shelter.city.count > 0 && shelter.state.count > 0 {
             self.contactLabel.text = "\(shelter.city), \(shelter.state)"
         } else {
             self.contactLabel.text = "--"

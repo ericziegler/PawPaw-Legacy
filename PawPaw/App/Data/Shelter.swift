@@ -27,7 +27,7 @@ class Shelter {
     
     var isValidShelter: Bool {
         get {
-            if self.identifier.characters.count > 0 && self.name.characters.count > 0 && self.coordinate.latitude != 0.0 && self.coordinate.longitude != 0.0 {
+            if self.identifier.count > 0 && self.name.count > 0 && self.coordinate.latitude != 0.0 && self.coordinate.longitude != 0.0 {
                 return true
             }
             return false
@@ -38,30 +38,30 @@ class Shelter {
         get {
             var result = ""
             
-            if self.address.characters.count > 0 {
+            if self.address.count > 0 {
                 result += self.address
             }
-            if self.city.characters.count > 0 {
-                if result.characters.count > 0 {
+            if self.city.count > 0 {
+                if result.count > 0 {
                     result += "\n"
                 }
                 result += self.city
             }
-            if self.state.characters.count > 0 {
-                if self.city.characters.count > 0 {
+            if self.state.count > 0 {
+                if self.city.count > 0 {
                     result += ", \(self.state)"
                 } else {
-                    if result.characters.count > 0 {
+                    if result.count > 0 {
                         result += "\n"
                     }
                     result += self.state
                 }
             }
-            if self.zip.characters.count > 0 {
-                if self.city.characters.count > 0 || self.state.characters.count > 0 {
+            if self.zip.count > 0 {
+                if self.city.count > 0 || self.state.count > 0 {
                     result += " \(self.zip)"
                 } else {
-                    if result.characters.count > 0 {
+                    if result.count > 0 {
                         result += "\n"
                     }
                     result += self.zip
@@ -90,7 +90,7 @@ class Shelter {
         if let parsedAddress2 = props.stringFor(key: "address2") {
             address2 = parsedAddress2
         }
-        if (address1.characters.count > 0 || address2.characters.count > 0) {
+        if (address1.count > 0 || address2.count > 0) {
             self.address = "\(address1) \(address2)"
         }
         
