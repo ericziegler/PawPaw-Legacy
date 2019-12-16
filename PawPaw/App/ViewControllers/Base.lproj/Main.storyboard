@@ -354,11 +354,11 @@
                                             <action selector="backTapped:" destination="YpO-o0-7qG" eventType="touchUpInside" id="o8a-IJ-Y3U"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="4YS-4p-jGv">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4YS-4p-jGv">
                                         <rect key="frame" x="64.5" y="42" width="246" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="38" id="uUX-Jk-FcB"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="246" id="wOz-oQ-rv0"/>
+                                            <constraint firstAttribute="width" constant="246" id="wOz-oQ-rv0"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -383,7 +383,7 @@
                                     <constraint firstItem="Bw8-aC-yAT" firstAttribute="leading" secondItem="MdO-oO-KR0" secondAttribute="leading" constant="11" id="Edt-Gp-JcR"/>
                                     <constraint firstItem="274-vL-GUa" firstAttribute="leading" secondItem="MdO-oO-KR0" secondAttribute="leading" constant="8" id="QZz-aT-9Vh"/>
                                     <constraint firstItem="274-vL-GUa" firstAttribute="centerY" secondItem="4YS-4p-jGv" secondAttribute="centerY" id="WR0-vg-h6n"/>
-                                    <constraint firstItem="4YS-4p-jGv" firstAttribute="centerX" secondItem="MdO-oO-KR0" secondAttribute="centerX" id="aD3-Pg-fUA"/>
+                                    <constraint firstItem="4YS-4p-jGv" firstAttribute="centerX" secondItem="MdO-oO-KR0" secondAttribute="centerX" id="jxJ-jP-nHA"/>
                                 </constraints>
                             </view>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Whoops! We couldn't find any pets." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACK-nZ-r9x">
@@ -604,7 +604,8 @@
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="nvd-HL-JKi">
                                         <rect key="frame" x="84.5" y="16.5" width="206" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="206" id="E3P-Ea-kUc"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="206" id="1e3-JV-VH3"/>
+                                            <constraint firstAttribute="height" constant="31" id="fbh-4N-ooK"/>
                                         </constraints>
                                         <segments>
                                             <segment title="Dogs"/>
@@ -711,6 +712,7 @@
                                 <rect key="frame" x="84.5" y="62" width="206" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="206" id="Qpg-eN-gHV"/>
+                                    <constraint firstAttribute="height" constant="31" id="ehc-es-pJf"/>
                                 </constraints>
                                 <segments>
                                     <segment title="Dogs"/>
@@ -1731,9 +1733,10 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsK-Qr-Brt">
-                                <rect key="frame" x="106.5" y="-1" width="162" height="32"/>
+                                <rect key="frame" x="78" y="-1" width="220" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="162" id="LDW-eM-aJr"/>
+                                    <constraint firstAttribute="width" constant="220" id="foD-aA-akH"/>
                                     <constraint firstAttribute="height" constant="32" id="qKd-1o-YSV"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
@@ -1741,7 +1744,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Photo Count)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOU-Lg-lAV">
-                                <rect key="frame" x="123" y="28" width="129" height="21"/>
+                                <rect key="frame" x="123.5" y="28" width="129" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="Def-tn-Sl9"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="129" id="u8G-QB-3TH"/>
@@ -1755,11 +1758,11 @@
                         <constraints>
                             <constraint firstItem="0Nb-h0-jyX" firstAttribute="top" secondItem="xmg-Hh-GXK" secondAttribute="bottom" constant="-40" id="41s-3X-zMK"/>
                             <constraint firstItem="1pr-oV-qpo" firstAttribute="bottom" secondItem="0Nb-h0-jyX" secondAttribute="bottom" id="8Cp-qm-XlG"/>
+                            <constraint firstItem="xmg-Hh-GXK" firstAttribute="leading" secondItem="jsK-Qr-Brt" secondAttribute="trailing" constant="5" id="TKD-VQ-CNl"/>
                             <constraint firstItem="xmg-Hh-GXK" firstAttribute="trailing" secondItem="0Nb-h0-jyX" secondAttribute="trailing" id="TZK-1b-FrG"/>
                             <constraint firstItem="1pr-oV-qpo" firstAttribute="trailing" secondItem="0Nb-h0-jyX" secondAttribute="trailing" id="YOv-vP-d7E"/>
-                            <constraint firstItem="jsK-Qr-Brt" firstAttribute="centerX" secondItem="QJd-U7-sh6" secondAttribute="centerX" id="bOE-k3-zd1"/>
+                            <constraint firstItem="GOU-Lg-lAV" firstAttribute="centerX" secondItem="jsK-Qr-Brt" secondAttribute="centerX" id="frp-gc-vlr"/>
                             <constraint firstItem="1pr-oV-qpo" firstAttribute="top" secondItem="xmg-Hh-GXK" secondAttribute="bottom" constant="17" id="gNF-nr-iMd"/>
-                            <constraint firstItem="GOU-Lg-lAV" firstAttribute="centerX" secondItem="QJd-U7-sh6" secondAttribute="centerX" id="hqo-Lv-yuC"/>
                             <constraint firstItem="GOU-Lg-lAV" firstAttribute="top" secondItem="0Nb-h0-jyX" secondAttribute="top" constant="28" id="nVB-Kc-Emv"/>
                             <constraint firstItem="0Nb-h0-jyX" firstAttribute="top" secondItem="jsK-Qr-Brt" secondAttribute="top" constant="1" id="qxi-j3-MGJ"/>
                             <constraint firstItem="1pr-oV-qpo" firstAttribute="leading" secondItem="0Nb-h0-jyX" secondAttribute="leading" id="wpp-Yi-PX6"/>

@@ -46,6 +46,7 @@ class FilterViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        petTypeSegmentedControl.ensureiOS12Style()
         self.setupButtons()
         self.updateForPetType()
     }

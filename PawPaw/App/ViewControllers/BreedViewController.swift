@@ -34,6 +34,7 @@ class BreedViewController: BaseViewController {
         super.viewDidLoad()
         self.breedTable.sectionIndexBackgroundColor = UIColor.clear
         self.breedTable.sectionIndexColor = UIColor.accentTab
+        petTypeSegmentedControl.ensureiOS12Style()
     }
     
     // MARK: Actions
