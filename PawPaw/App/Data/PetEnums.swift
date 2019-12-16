@@ -21,11 +21,11 @@ enum PetType: String {
 enum Size: String {
  
     case unknown = ""
-    case extraSmall = "xs"
-    case small = "s"
-    case medium = "m"
-    case large = "l"
-    case extraLarge = "xl"
+    case extraSmall = "extra small"
+    case small = "small"
+    case medium = "medium"
+    case large = "large"
+    case extraLarge = "extra large"
     
     var formattedValue: String {
         get {
@@ -100,8 +100,8 @@ enum Age: String {
 enum Gender: String {
     
     case unknown = ""
-    case female = "f"
-    case male = "m"
+    case female = "female"
+    case male = "male"
     
     var formattedValue: String {
         switch self {

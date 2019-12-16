@@ -158,9 +158,11 @@ extension PetDetailViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: ShelterInfoCellId, for: indexPath) as! ShelterInfoCell
             var contactInfo = "N/A"
             if indexPath.row == 0 {
-                if self.pet.shelterFormattedPhone.count > 0 {
-                    contactInfo = self.pet.shelterFormattedPhone
+                var formattedPhone = self.pet.shelterPhone
+                if let prettyFormattedPhone = self.pet.formatPhone(source: formattedPhone) {
+                    formattedPhone = prettyFormattedPhone
                 }
+                contactInfo = formattedPhone
                 cell.layoutFor(heading: "Call about me", value: contactInfo)
             } else {
                 if self.pet.shelterEmail.count > 0 {

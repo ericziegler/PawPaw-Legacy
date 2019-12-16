@@ -141,7 +141,7 @@ class Shelter {
             var resultPets: [Pet]?
             var resultError: Error? = error
             if resultError == nil {
-                if let json = json, let petfinderJSON = json.dictionary?["petfinder"], let petsJSON = petfinderJSON.dictionary?["pets"], let petsProps = petsJSON.dictionary?["pet"]?.array {
+                if let json = json, let petsJSON = json.dictionary?["animals"], let petsProps = petsJSON.array {
                     resultPets = [Pet]()
                     for curPetProps in petsProps {
                         let pet = Pet()

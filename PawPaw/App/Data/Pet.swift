@@ -17,7 +17,6 @@ let PetShelterCityCacheKey = "PetShelterCityCacheKey"
 let PetShelterStateCacheKey = "PetShelterStateCacheKey"
 let PetShelterZipCacheKey = "PetShelterZipCacheKey"
 let PetShelterPhoneCacheKey = "PetShelterPhoneCacheKey"
-let PetShelterFormattedPhoneCacheKey = "PetShelterFormattedPhoneCacheKey"
 let PetShelterEmailCacheKey = "PetShelterEmailCacheKey"
 let PetPhotoURLsCacheKey = "PetPhotoURLsCacheKey"
 let PetNameCacheKey = "PetNameCacheKey"
@@ -60,7 +59,7 @@ class Pet: NSObject, NSCoding {
     
     var alteredDisplayText: String {
         get {
-            var result = "Unknown"
+            var result = "Fixed"
             
             if self.isAltered {
                 if self.gender == .male {
@@ -112,9 +111,6 @@ class Pet: NSObject, NSCoding {
         if let cachedShelterPhone = decoder.decodeObject(forKey: PetShelterPhoneCacheKey) as? String {
             self.shelterPhone = cachedShelterPhone
         }
-        if let cachedShelterFormattedPhone = decoder.decodeObject(forKey: PetShelterFormattedPhoneCacheKey) as? String {
-            self.shelterFormattedPhone = cachedShelterFormattedPhone
-        }
         if let cachedShelterEmail = decoder.decodeObject(forKey: PetShelterEmailCacheKey) as? String {
             self.shelterEmail = cachedShelterEmail
         }
@@ -156,7 +152,6 @@ class Pet: NSObject, NSCoding {
         encoder.encode(self.shelterState, forKey: PetShelterStateCacheKey)
         encoder.encode(self.shelterZip, forKey: PetShelterZipCacheKey)
         encoder.encode(self.shelterPhone, forKey: PetShelterPhoneCacheKey)
-        encoder.encode(self.shelterFormattedPhone, forKey: PetShelterFormattedPhoneCacheKey)
         encoder.encode(self.shelterEmail, forKey: PetShelterEmailCacheKey)
         let photoData = NSKeyedArchiver.archivedData(withRootObject: self.photoURLs)
         encoder.encode(photoData, forKey: PetPhotoURLsCacheKey)
@@ -177,93 +172,103 @@ class Pet: NSObject, NSCoding {
     
     func load(props: JSON) {
         // basic info
-        if let parsedIdentifier = props.stringFor(key: "id") {
-            self.identifier = parsedIdentifier
+        if let parsedIdentifier = props["id"].int {
+            self.identifier = String(parsedIdentifier)
         }
-        if let parsedShelterId = props.stringFor(key: "shelterId") {
+        if let parsedShelterId = props["organization_id"].string {
             self.shelterId = parsedShelterId
         }
-        if let parsedName = props.stringFor(key: "name") {
+        if let parsedName = props["name"].string {
             self.name = parsedName.strippingHTML()
         }
-        if let parsedDescription = props.stringFor(key: "description") {
+        if let parsedDescription = props["description"].string {
             self.story = parsedDescription.strippingHTML()
         }
-        if let parsedType = props.stringFor(key: "animal"), let typeEnum = PetType(rawValue: parsedType.lowercased()) {
+        if let parsedType = props["type"].string, let typeEnum = PetType(rawValue: parsedType.lowercased()) {
             self.petType = typeEnum
         }
-        if let parsedAge = props.stringFor(key: "age"), let ageEnum = Age(rawValue: parsedAge.lowercased()) {
+        if let parsedAge = props["age"].string, let ageEnum = Age(rawValue: parsedAge.lowercased()) {
             self.age = ageEnum
         }
-        if let parsedSize = props.stringFor(key: "size"), let sizeEnum = Size(rawValue: parsedSize.lowercased()) {
+        if let parsedSize = props["size"].string, let sizeEnum = Size(rawValue: parsedSize.lowercased()) {
             self.size = sizeEnum
         }
-        if let parsedGender = props.stringFor(key: "sex"), let genderEnum = Gender(rawValue: parsedGender.lowercased()) {
+        if let parsedGender = props["gender"].string, let genderEnum = Gender(rawValue: parsedGender.lowercased()) {
             self.gender = genderEnum
         }
         
         // photos
-        if let mediaJSON = props.dictionary?["media"], let photosJSON = mediaJSON.dictionary?["photos"], let photosProps = photosJSON.dictionary?["photo"]?.array {
+        if let photosProps = props["photos"].array {
             for curPhotoProps in photosProps {
-                if let photoURL = curPhotoProps.dictionary?[TIdentifier]?.string, photoURL.range(of: "&-x.") != nil {
+                var photoURL: String?
+                if let photo = curPhotoProps["full"].string {
+                    photoURL = photo
+                }
+                else if let photo = curPhotoProps["large"].string {
+                    photoURL = photo
+                }
+                else if let photo = curPhotoProps["medium"].string {
+                    photoURL = photo
+                }
+                else if let photo = curPhotoProps["small"].string {
+                    photoURL = photo
+                }
+                if let photoURL = photoURL {
                     self.photoURLs.append(photoURL)
                 }
             }
         }
         
         // breed
-        if let breedsJSON = props.dictionary?["breeds"], let breedProps = breedsJSON.dictionary?["breed"], let parsedBreed = breedProps.dictionary?[TIdentifier]?.string {
-            self.breed = parsedBreed
+        if let breedsJSON = props.dictionary?["breeds"], let breedProps = breedsJSON.dictionary {
+            if let breedProp = breedProps["primary"]?.string {
+                self.breed = breedProp
+            }
+            else if let breedProp = breedProps["secondary"]?.string {
+                self.breed = breedProp
+            }
         }
     
         // pet options
-        if let optionsJSON = props.dictionary?["options"], let optionJSON = optionsJSON.dictionary?["option"]?.array {
-            for curOption in optionJSON {
-                if let option = curOption.dictionary?[TIdentifier]?.string {
-                    if option == "hasShots" {
-                        self.hasShots = true
-                    }
-                    else if option == "houseTrained" {
-                        self.isHouseTrained = true
-                    }
-                    else if option == "altered" {
-                        self.isAltered = true
-                    }
-                }
+        if let optionsJSON = props.dictionary?["attributes"], let optionsProps = optionsJSON.dictionary {
+            if let hasShotsProp = optionsProps["shots_current"]?.bool {
+                hasShots = hasShotsProp
+            }
+            if let alteredProps = optionsProps["spayed_neutered"]?.bool {
+                   isAltered = alteredProps
+            }
+            if let houseTrainedProps = optionsProps["house_trained"]?.bool {
+                      isHouseTrained = houseTrainedProps
             }
         }
         
         // shelter info
-        if let contactJSON = props.dictionary?["contact"] {
-            var address1 = ""
-            var address2 = ""
-            if let parsedAddress1 = contactJSON.stringFor(key: "address1") {
-                address1 = parsedAddress1
+        if let contactJSON = props.dictionary?["contact"], let contactProps = contactJSON.dictionaryObject {
+            if let addressProps = contactProps["address"] as? [String : Any] {
+                if let streetProps1 = addressProps["address1"] as? String {
+                    shelterAddress = streetProps1
+                    if let streetProps2 = addressProps["address2"] as? String {
+                        shelterAddress += streetProps2
+                    }
+                }
+                if let cityProps = addressProps["city"] as? String {
+                    shelterCity = cityProps
+                }
+                if let stateProps = addressProps["state"] as? String {
+                    shelterState = stateProps
+                }
+                if let zipProps = addressProps["postalcode"] as? String {
+                    shelterZip = zipProps
+                }
             }
-            if let parsedAddress2 = contactJSON.stringFor(key: "address2") {
-                address2 = parsedAddress2
+            if let emailProps = contactProps["email"] as? String {
+                shelterEmail = emailProps
             }
-            if (address1.count > 0 || address2.count > 0) {
-                self.shelterAddress = "\(address1) \(address2)"
-            }
-            
-            if let parsedCity = contactJSON.stringFor(key: "city") {
-                self.shelterCity = parsedCity
-            }
-            if let parsedState = contactJSON.stringFor(key: "state") {
-                self.shelterState = parsedState
-            }
-            if let parsedZip = contactJSON.stringFor(key: "zip") {
-                self.shelterZip = parsedZip
-            }
-            if let parsedEmail = contactJSON.stringFor(key: "email") {
-                self.shelterEmail = parsedEmail
-            }
-            if let parsedPhone = contactJSON.stringFor(key: "phone") {
-                self.shelterFormattedPhone = parsedPhone
-                self.shelterPhone = parsedPhone.formattedPhone()
+            if let phoneProps = contactProps["phone"] as? String {
+                shelterPhone = phoneProps.formattedPhone()
             }
         }
+        print("STOP")
     }
     
     var formattedAddress: String {
@@ -301,6 +306,17 @@ class Pet: NSObject, NSCoding {
             }
             
             return result
+        }
+    }
+
+    // MARK: - Formatting
+
+    func formatPhone(source: String) -> String? {
+        if let formattedPhoneNumber = String.formatPhoneNumber(source: source) {
+            return formattedPhoneNumber
+        }
+        else {
+            return nil
         }
     }
     
