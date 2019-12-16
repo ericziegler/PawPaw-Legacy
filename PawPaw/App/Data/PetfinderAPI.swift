@@ -21,15 +21,17 @@ let APISecret = "25E5gnzUXFgnoMdvqIQcOL6dRuYDcaxjkqGdbLPW"
 #endif
 
 let AccessTokenCacheKey = "AccessTokenCacheKey"
+let AccessTokenTimestampCacheKey = "AccessTokenTimestampCacheKey"
+let AccessTokenTimeLimit: TimeInterval = 3480
 
 typealias RequestCompletionBlock = (_ response: JSON?, _ error: Error?) -> ()
-let TIdentifier = "$t"
 
 class PetFinderAPI {
 
     // MARK: Properties
 
     var accessToken: String?
+    var tokenTimestamp: Date?
     var requestingToken = false
     
     // MARK: Init
@@ -55,6 +57,7 @@ class PetFinderAPI {
         let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
             let result = self.buildJSONResponse(data: data, error: error)
             self.accessToken = result.0?.dictionary?["access_token"]?.rawString()
+            self.tokenTimestamp = Date()
             self.requestingToken = false
             self.saveAccessToken()
             print("Access token acquired: \(self.accessToken)")
@@ -62,14 +65,35 @@ class PetFinderAPI {
         task.resume()
     }
 
+    private func validateAccessToken() {
+        if let timestamp = tokenTimestamp {
+            if Date().timeIntervalSince(timestamp) > AccessTokenTimeLimit {
+                clearAccessToken()
+                requestAccessToken()
+            }
+        } else {
+            clearAccessToken()
+        }
+    }
+
+    private func clearAccessToken() {
+        accessToken = nil
+        tokenTimestamp = nil
+        saveAccessToken()
+    }
+
     private func saveAccessToken() {
         UserDefaults.standard.set(accessToken, forKey: AccessTokenCacheKey)
+        UserDefaults.standard.set(tokenTimestamp, forKey: AccessTokenTimestampCacheKey)
         UserDefaults.standard.synchronize()
     }
 
     private func loadAccessToken() {
         if let token = UserDefaults.standard.object(forKey: AccessTokenCacheKey) as? String {
             accessToken = token
+        }
+        if let timestamp = UserDefaults.standard.object(forKey: AccessTokenTimestampCacheKey) as? Date {
+            tokenTimestamp = timestamp
         }
         if accessToken == nil {
             requestAccessToken()
@@ -79,6 +103,7 @@ class PetFinderAPI {
     // MARK: Shelter Requests
     
     func requestSheltersNear(zip: String, completion: @escaping RequestCompletionBlock) {
+        validateAccessToken()
         guard let request = self.buildRequestFor(fileName: "organizations", params: ["location" : zip, "distance" : "100", "sort" : "distance", "limit" : "100"]) else {
             completion(nil, PawPawError.InvalidRequestError)
             return
@@ -94,6 +119,7 @@ class PetFinderAPI {
     // MARK: Pet Requests
     
     func requestPetsFor(shelterId: String, completion: @escaping RequestCompletionBlock) {
+        validateAccessToken()
         guard let request = self.buildRequestFor(fileName: "animals", params: ["organization" : shelterId, "page" : "1", "limit" : "100"]) else {
             completion(nil, PawPawError.InvalidRequestError)
             return
@@ -107,6 +133,7 @@ class PetFinderAPI {
     }
     
     func requestPetsFor(type: PetType, zip: String, completion: @escaping RequestCompletionBlock) {
+        validateAccessToken()
         guard let request = self.buildRequestFor(fileName: "animals", params: ["type" : type.rawValue, "location" : zip, "page" : "1", "limit" : "32"]) else {
             completion(nil, PawPawError.InvalidRequestError)
             return
@@ -120,11 +147,26 @@ class PetFinderAPI {
     }
     
     func requestPetsFor(type: PetType, breed: String, zip: String, completion: @escaping RequestCompletionBlock) {
+        validateAccessToken()
         guard let request = self.buildRequestFor(fileName: "animals", params: ["type" : type.rawValue, "breed" : breed, "location" : zip, "page" : "1", "limit" : "100"]) else {
             completion(nil, PawPawError.InvalidRequestError)
             return
         }
         
+        let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
+            let result = self.buildJSONResponse(data: data, error: error)
+            completion(result.0, result.1)
+        }
+        task.resume()
+    }
+
+    func requestPetDetailsFor(petId: String, completion: @escaping RequestCompletionBlock) {
+        validateAccessToken()
+        guard let request = self.buildRequestFor(fileName: "animals/\(petId)", params: [:]) else {
+            completion(nil, PawPawError.InvalidRequestError)
+            return
+        }
+
         let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
             let result = self.buildJSONResponse(data: data, error: error)
             completion(result.0, result.1)

@@ -21,6 +21,7 @@ class PetDetailViewController: BaseViewController {
     @IBOutlet var petTable: UITableView!
     
     var pet: Pet!
+    var loadingPetDetails = false
     
     // MARK: Init
     
@@ -29,6 +30,24 @@ class PetDetailViewController: BaseViewController {
         let viewController: PetDetailViewController = storyboard.instantiateViewController(withIdentifier: PetDetailViewId) as! PetDetailViewController
         viewController.pet = pet
         return viewController
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        petTable.rowHeight = UITableView.automaticDimension
+        petTable.estimatedRowHeight = 45.5
+
+        // TODO: Implement based on feedback from PetFinder
+//        loadingPetDetails = true
+//        Pet.loadDetailsWithId(petId: pet.identifier) { (pet, error) in
+//            if error == nil  && pet != nil {
+//                self.pet = pet!
+//            }
+//            self.loadingPetDetails = false
+//            DispatchQueue.main.async {
+//                self.petTable.reloadData()
+//            }
+//        }
     }
     
     // MARK: Actions
@@ -76,7 +95,10 @@ class PetDetailViewController: BaseViewController {
 extension PetDetailViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        if loadingPetDetails == false {
+            return 4
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -177,28 +199,6 @@ extension PetDetailViewController: UITableViewDataSource {
 }
 
 extension PetDetailViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return PetPhotoCellHeight
-        }
-        else if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                return PetContactHeaderCellHeight
-            } else {
-                return UITableView.automaticDimension
-            }
-        }
-        else if indexPath.section == 2 {
-            if indexPath.row == 0 {
-                return PetContactHeaderCellHeight
-            } else {
-                return PetDetailCellHeight
-            }
-        } else {
-            return ShelterInfoCellHeight
-        }
-    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 3 {

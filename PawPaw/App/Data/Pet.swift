@@ -31,6 +31,8 @@ let PetIsHouseTrainedCacheKey = "PetIsHouseTrainedCacheKey"
 let PetIsAlteredCacheKey = "PetIsAlteredCacheKey"
 let PetIsFavoritedCacheKey = "PetIsFavoritedCacheKey"
 
+typealias PetDetailCompletionBlock = (_ pet: Pet?, _ error: Error?) -> ()
+
 class Pet: NSObject, NSCoding {
 
     // MARK: Properties
@@ -257,7 +259,7 @@ class Pet: NSObject, NSCoding {
                 if let stateProps = addressProps["state"] as? String {
                     shelterState = stateProps
                 }
-                if let zipProps = addressProps["postalcode"] as? String {
+                if let zipProps = addressProps["postcode"] as? String {
                     shelterZip = zipProps
                 }
             }
@@ -268,7 +270,27 @@ class Pet: NSObject, NSCoding {
                 shelterPhone = phoneProps.formattedPhone()
             }
         }
-        print("STOP")
+    }
+
+    static func loadDetailsWithId(petId: String, completion: PetDetailCompletionBlock?) {
+        PetFinderAPI.shared.requestPetDetailsFor(petId: petId) { (json, error) in
+            var resultError: Error? = error
+            var resultPet: Pet?
+            if resultError == nil {
+                if let json = json, let petJSON = json.dictionary?["animal"] {
+                    resultPet = Pet()
+                    resultPet!.load(props: petJSON)
+                    if resultPet!.isValidPet == false {
+                        resultPet = nil
+                    }
+                }
+            } else {
+                resultError = PawPawError.JSONParsingError
+            }
+            if let completion = completion {
+                completion(resultPet, resultError)
+            }
+        }
     }
     
     var formattedAddress: String {

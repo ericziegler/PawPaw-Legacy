@@ -42,7 +42,6 @@
 		07F62BF71FA7AAD700E757F9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F62BF61FA7AA5800E757F9 /* SwiftyJSON.swift */; };
 		07F62BF91FA7AE5900E757F9 /* Error+PawPaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F62BF81FA7AE5900E757F9 /* Error+PawPaw.swift */; };
 		07F62BFC1FA7B1CB00E757F9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07F62BFB1FA7B1CB00E757F9 /* CoreLocation.framework */; };
-		07F62C001FA7B6FF00E757F9 /* SwiftyJSON+PawPaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F62BFF1FA7B6FF00E757F9 /* SwiftyJSON+PawPaw.swift */; };
 		07F62C0C1FAA3A2200E757F9 /* PetEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F62C0B1FAA3A2200E757F9 /* PetEnums.swift */; };
 		07FEF4EF1FAA836400E4EEB2 /* PetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF4EE1FAA836400E4EEB2 /* PetListViewController.swift */; };
 		07FEF4F11FAA842F00E4EEB2 /* BreedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF4F01FAA842F00E4EEB2 /* BreedViewController.swift */; };
@@ -97,7 +96,6 @@
 		07F62BF61FA7AA5800E757F9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		07F62BF81FA7AE5900E757F9 /* Error+PawPaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+PawPaw.swift"; sourceTree = "<group>"; };
 		07F62BFB1FA7B1CB00E757F9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		07F62BFF1FA7B6FF00E757F9 /* SwiftyJSON+PawPaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyJSON+PawPaw.swift"; sourceTree = "<group>"; };
 		07F62C0B1FAA3A2200E757F9 /* PetEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetEnums.swift; sourceTree = "<group>"; };
 		07FEF4EE1FAA836400E4EEB2 /* PetListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetListViewController.swift; sourceTree = "<group>"; };
 		07FEF4F01FAA842F00E4EEB2 /* BreedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedViewController.swift; sourceTree = "<group>"; };
@@ -207,7 +205,6 @@
 				787993CC23A66ED40011B11F /* UIKitExtensions.swift */,
 				787993CE23A66EDD0011B11F /* FoundationExtensions.swift */,
 				07F62BF81FA7AE5900E757F9 /* Error+PawPaw.swift */,
-				07F62BFF1FA7B6FF00E757F9 /* SwiftyJSON+PawPaw.swift */,
 				075D59D71FAA6F3100613AB4 /* UIImageView+PawPaw.swift */,
 				075D59E21FAA821200613AB4 /* UIColor+Extensions.swift */,
 				07072D4A1FAB246200F74F4A /* String+PawPaw.swift */,
@@ -357,7 +354,6 @@
 				07FEF4F71FAA84DE00E4EEB2 /* PetDetailViewController.swift in Sources */,
 				787993C723A66E340011B11F /* BaseViewController.swift in Sources */,
 				07E460501FA5F9DC00E77542 /* Shelter.swift in Sources */,
-				07F62C001FA7B6FF00E757F9 /* SwiftyJSON+PawPaw.swift in Sources */,
 				072694C01FAB5B6C00F0D0BC /* MutableCollection+PawPaw.swift in Sources */,
 				071827871FAC8C0200C85FA5 /* PetStoryCell.swift in Sources */,
 				07FEF4EF1FAA836400E4EEB2 /* PetListViewController.swift in Sources */,

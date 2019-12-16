@@ -25,14 +25,23 @@ class PetPhotoCell: UITableViewCell {
     // MARK: Properties
     
     @IBOutlet var photoImageView: UIImageView!
+    @IBOutlet var nameBackground: UIView!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var favoriteButton: UIButton!
+    @IBOutlet var scrimView: UIView!
     
     var delegate: PetPhotoCellDelegate?
     private var pet: Pet?
     
     // MARK: Init
-    
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let photoButton = UIButton(frame: scrimView.frame)
+        photoButton.addTarget(self, action: #selector(photosTapped(_:)), for: .touchUpInside)
+        scrimView.insertSubview(photoButton, belowSubview: nameBackground)
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
         self.photoImageView.image = nil

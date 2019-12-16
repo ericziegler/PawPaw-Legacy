@@ -64,6 +64,8 @@ extension String {
         result = result.replacingOccurrences(of: "<p>", with: "\n\n")
         result = result.replacingOccurrences(of: "&#39;", with: "'")
         result = result.replacingOccurrences(of: "&#34;", with: "\"")
+        result = result.replacingOccurrences(of: "&amp;#39;", with: "'")
+        result = result.replacingOccurrences(of: "&amp;#34;", with: "\"")
         
         result = result.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
         
