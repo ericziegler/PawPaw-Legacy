@@ -31,12 +31,11 @@ class ShelterCell: UITableViewCell {
     
     func layoutFor(shelter: Shelter) {
         self.nameLabel.text = shelter.name
-        
         if shelter.address.count > 0 {
             self.contactLabel.text = shelter.address
         }
-        else if shelter.formattedPhone.count > 0 {
-            self.contactLabel.text = shelter.formattedPhone
+        else if let formattedPhone = shelter.formatPhone(source: shelter.phone), formattedPhone.count > 0 {
+            self.contactLabel.text = formattedPhone
         }
         else if shelter.email.count > 0 {
             self.contactLabel.text = shelter.email

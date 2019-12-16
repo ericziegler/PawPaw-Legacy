@@ -57,7 +57,11 @@ class ShelterDetailViewController: BaseViewController {
     func performCall() {
         if self.shelter.phone.count > 0 {
             if let url = URL(string: "tel://\(self.shelter.phone)"), UIApplication.shared.canOpenURL(url) {
-                let alert = UIAlertController(title: "Would you like to call \(self.shelter.formattedPhone)?", message: "This will call \(self.shelter.name)", preferredStyle: .alert)
+                var formattedPhone = shelter.phone
+                if let prettyFormattedPhone = shelter.formatPhone(source: formattedPhone) {
+                    formattedPhone = prettyFormattedPhone
+                }
+                let alert = UIAlertController(title: "Would you like to call \(formattedPhone)?", message: "This will call \(self.shelter.name)", preferredStyle: .alert)
                 let yesAction = UIAlertAction(title: "Yes", style: .default) { (action) in
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 }
@@ -110,7 +114,11 @@ extension ShelterDetailViewController: UITableViewDataSource {
                 cell.layoutFor(heading: "Address:", value: shelter.formattedAddress)
             }
             else if indexPath.row == 2 {
-                cell.layoutFor(heading: "Phone:", value: shelter.formattedPhone)
+                var formattedPhone = shelter.phone
+                if let prettyFormattedPhone = shelter.formatPhone(source: formattedPhone) {
+                    formattedPhone = prettyFormattedPhone
+                }
+                cell.layoutFor(heading: "Phone:", value: formattedPhone)
             } else {
                 cell.layoutFor(heading: "Email:", value: shelter.email)
             }

@@ -39,7 +39,7 @@ class PetList {
     
     func loadPetsFor(type: PetType, sizes: [Size], genders: [Gender], ages: [Age], zip: String, offset: Int, completion: PetCompletionBlock?) {
         self.lastLoadedCount = offset
-        PetFinderAPI.shared.requestPetsFor(type: type, zip: zip, offset: offset) { [weak self] (json, error) in
+        PetFinderAPI.shared.requestPetsFor(type: type, zip: zip) { [weak self] (json, error) in
             var resultPets: [Pet]?
             var resultError: Error? = error
             if let strongSelf = self {
@@ -73,7 +73,7 @@ class PetList {
     }
     
     func loadPetsFor(type: PetType, breed: String, zip: String, offset: Int, completion: PetCompletionBlock?) {
-        PetFinderAPI.shared.requestPetsFor(type: type, breed: breed, zip: zip, offset: offset) { [weak self] (json, error) in
+        PetFinderAPI.shared.requestPetsFor(type: type, breed: breed, zip: zip) { [weak self] (json, error) in
             var resultPets: [Pet]?
             var resultError: Error? = error
             if resultError == nil {

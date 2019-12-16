@@ -48,7 +48,7 @@ class ShelterListViewController: BaseViewController {
             self.loadingView = LoadingView.displayIn(parentView: self.view, animated: true)
             self.shelterList.loadSheltersFor(zip: zip, completion: { (shelters, error) in
                 DispatchQueue.main.async {
-                    if error == nil && shelters != nil {
+                    if error == nil && shelters.count > 0 {
                         self.loadingView?.dismissWith(animation: true)
                         self.shelterTable.reloadData()
                     } else {

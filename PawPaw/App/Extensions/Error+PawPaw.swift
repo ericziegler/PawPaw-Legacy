@@ -11,5 +11,7 @@ import Foundation
 enum PawPawError: Error {
 
     case JSONParsingError
+    case InvalidRequestError
+    case GeocodingError
     
 }

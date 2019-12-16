@@ -9,6 +9,10 @@
 import Foundation
 import CoreLocation
 
+// MARK: - Constants
+
+typealias ShelterLoadCompletionBlock = (_ error: Error?) -> ()
+
 class Shelter {
 
     // MARK: Properties
@@ -21,8 +25,8 @@ class Shelter {
     var zip: String = ""
     var email: String = ""
     var phone: String = ""
-    var formattedPhone: String = ""
     var coordinate: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
+    var isLoading = false
     var pets: [Pet] = [Pet]()
     
     var isValidShelter: Bool {
@@ -74,50 +78,66 @@ class Shelter {
     
     // MARK: Loading
     
-    func load(props: JSON) {
-        if let parsedIdentifier = props.stringFor(key: "id") {
-            self.identifier = parsedIdentifier
-        }
-        if let parsedName = props.stringFor(key: "name") {
-            self.name = parsedName.strippingHTML()
-        }
-        
-        var address1 = ""
-        var address2 = ""
-        if let parsedAddress1 = props.stringFor(key: "address1") {
-            address1 = parsedAddress1
-        }
-        if let parsedAddress2 = props.stringFor(key: "address2") {
-            address2 = parsedAddress2
-        }
-        if (address1.count > 0 || address2.count > 0) {
-            self.address = "\(address1) \(address2)"
-        }
-        
-        if let parsedCity = props.stringFor(key: "city") {
-            self.city = parsedCity
-        }
-        if let parsedState = props.stringFor(key: "state") {
-            self.state = parsedState
-        }
-        if let parsedZip = props.stringFor(key: "zip") {
-            self.zip = parsedZip
-        }
-        if let parsedEmail = props.stringFor(key: "email") {
-            self.email = parsedEmail
-        }
-        if let parsedPhone = props.stringFor(key: "phone") {
-            self.formattedPhone = parsedPhone
-            self.phone = parsedPhone.formattedPhone()
-        }        
-        if let parsedLatitudeString = props.stringFor(key: "latitude"), let parsedLatitude = Double(parsedLatitudeString),
-            let parsedLongitudeString = props.stringFor(key: "longitude"), let parsedLongitude = Double(parsedLongitudeString) {
-            self.coordinate = CLLocationCoordinate2DMake(parsedLatitude, parsedLongitude)
+    func load(props: JSON, completion: @escaping ShelterLoadCompletionBlock) {
+        isLoading = true
+        if let propsDict = props.dictionaryObject {
+            // identifier
+            if let idProps = propsDict["id"] as? String {
+                identifier = idProps
+            }
+            // name
+            if let nameProp = propsDict["name"] as? String {
+                name = nameProp
+            }
+            // address
+            if let addressProps = propsDict["address"] as? [String : Any] {
+                // street address
+                if let streetProps1 = addressProps["address1"] as? String {
+                    address = streetProps1
+                    if let streetProps2 = addressProps["address2"] as? String {
+                        address += streetProps2
+                    }
+                }
+                // city
+                if let cityProps = addressProps["city"] as? String {
+                    city = cityProps
+                }
+                // state
+                if let stateProps = addressProps["state"] as? String {
+                    state = stateProps
+                }
+                // zip
+                if let zipProps = addressProps["postcode"] as? String {
+                    zip = zipProps
+                }
+            }
+            // email
+            if let emailProps = propsDict["email"] as? String {
+                email = emailProps
+            }
+            // phone
+            if let phoneProps = propsDict["phone"] as? String {
+                phone = phoneProps.formattedPhone()
+            }
+            // location
+            let geoCoder = CLGeocoder()
+            geoCoder.geocodeAddressString(formattedAddress.replacingOccurrences(of: "\n", with: ", ")) { (placemarks, error) in
+                guard let placemarks = placemarks, let location = placemarks.first?.location else {
+                    self.isLoading = false
+                    completion(PawPawError.GeocodingError)
+                    return
+                }
+                self.coordinate = location.coordinate
+                self.isLoading = false
+                completion(nil)
+            }
+        } else {
+            isLoading = false
         }
     }
     
     func loadPetsWith(offset: Int, completion: PetCompletionBlock?) {
-        PetFinderAPI.shared.requestPetsFor(shelterId: self.identifier, offset: 0) { [weak self] (json, error) in
+        PetFinderAPI.shared.requestPetsFor(shelterId: self.identifier) { [weak self] (json, error) in
             var resultPets: [Pet]?
             var resultError: Error? = error
             if resultError == nil {
@@ -140,6 +160,17 @@ class Shelter {
                     completion(strongSelf.pets, resultError)
                 }
             }
+        }
+    }
+
+    // MARK: - Formatting
+
+    func formatPhone(source: String) -> String? {
+        if let formattedPhoneNumber = String.formatPhoneNumber(source: source) {
+            return formattedPhoneNumber
+        }
+        else {
+            return nil
         }
     }
     

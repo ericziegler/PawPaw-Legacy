@@ -10,15 +10,17 @@ import Foundation
 
 // MARK: Constants
 
-let PetFinderURL = "https://api.petfinder.com"
+let PetFinderURL = "https://api.petfinder.com/v2"
 
 #if DEBUG
-let APIKey = "46e28d7c8ef3048f289b447a0500510a"
-let APISecret = "ce338a1ef64c96b5ec64be18d578a136"
+let APIKey = "Edyur498OSOPQofijM57vmmXCqqpLfpQrTUQgEU4cnFzx4DfYL"
+let APISecret = "BkJn34mUFHXq0ulFyxuE5hi8tT31HtO1C7DsUDIH"
 #else
-let APIKey = "4d22879ff758059f1de3e57668425ce5"
-let APISecret = "d13bfbd0070c6b197ccb3564693ac79c"
+let APIKey = "Faa66DyjJP5T6geA3YhE9HV7kluozrYG2KZbEoY00qR8Bkrb5w"
+let APISecret = "25E5gnzUXFgnoMdvqIQcOL6dRuYDcaxjkqGdbLPW"
 #endif
+
+let AccessTokenCacheKey = "AccessTokenCacheKey"
 
 typealias RequestCompletionBlock = (_ response: JSON?, _ error: Error?) -> ()
 let TIdentifier = "$t"
@@ -26,73 +28,135 @@ let TIdentifier = "$t"
 class PetFinderAPI {
 
     // MARK: Properties
+
+    var accessToken: String?
+    var requestingToken = false
     
     // MARK: Init
     
     static let shared = PetFinderAPI()
+
+    init() {
+        loadAccessToken()
+    }
+
+    // MARK: Access Token Requests
+
+    func requestAccessToken() {
+        guard let url = URL(string: "\(PetFinderURL)/oauth2/token"),
+        let payload = "grant_type=client_credentials&client_id=\(APIKey)&client_secret=\(APISecret)".data(using: .utf8) else
+        {
+            return
+        }
+        requestingToken = true
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = payload
+        let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
+            let result = self.buildJSONResponse(data: data, error: error)
+            self.accessToken = result.0?.dictionary?["access_token"]?.rawString()
+            self.requestingToken = false
+            self.saveAccessToken()
+            print("Access token acquired: \(self.accessToken)")
+        }
+        task.resume()
+    }
+
+    private func saveAccessToken() {
+        UserDefaults.standard.set(accessToken, forKey: AccessTokenCacheKey)
+        UserDefaults.standard.synchronize()
+    }
+
+    private func loadAccessToken() {
+        if let token = UserDefaults.standard.object(forKey: AccessTokenCacheKey) as? String {
+            accessToken = token
+        }
+        if accessToken == nil {
+            requestAccessToken()
+        }
+    }
     
     // MARK: Shelter Requests
     
-    func requestSheltersNear(zip: String, completion: RequestCompletionBlock?) {
-        let request = self.buildRequestFor(fileName: "shelter.find", params: ["location" : zip])
+    func requestSheltersNear(zip: String, completion: @escaping RequestCompletionBlock) {
+        guard let request = self.buildRequestFor(fileName: "organizations", params: ["location" : zip, "distance" : "100", "sort" : "distance", "limit" : "100"]) else {
+            completion(nil, PawPawError.InvalidRequestError)
+            return
+        }
         
         let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
-            if let completion = completion {
-                let result = self.buildJSONResponse(data: data, error: error)
-                completion(result.0, result.1)
-            }
+            let result = self.buildJSONResponse(data: data, error: error)
+            completion(result.0, result.1)
         }
         task.resume()
     }
     
     // MARK: Pet Requests
     
-    func requestPetsFor(shelterId: String, offset: Int, completion: RequestCompletionBlock?) {
-        let request = self.buildRequestFor(fileName: "shelter.getPets", params: ["id" : shelterId, "offset" : String(offset)])
+    func requestPetsFor(shelterId: String, completion: @escaping RequestCompletionBlock) {
+        guard let request = self.buildRequestFor(fileName: "animals", params: ["organization" : shelterId, "page" : "1", "limit" : "100"]) else {
+            completion(nil, PawPawError.InvalidRequestError)
+            return
+        }
         
         let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
-            if let completion = completion {
-                let result = self.buildJSONResponse(data: data, error: error)
-                completion(result.0, result.1)
-            }
+            let result = self.buildJSONResponse(data: data, error: error)
+            completion(result.0, result.1)
         }
         task.resume()
     }
     
-    func requestPetsFor(type: PetType, zip: String, offset: Int, completion: RequestCompletionBlock?) {
-        let request = self.buildRequestFor(fileName: "pet.find", params: ["animal" : type.rawValue, "location" : zip, "offset" : String(offset), "output" : "full"])
+    func requestPetsFor(type: PetType, zip: String, completion: @escaping RequestCompletionBlock) {
+        guard let request = self.buildRequestFor(fileName: "animals", params: ["type" : type.rawValue, "location" : zip, "page" : "1", "limit" : "32"]) else {
+            completion(nil, PawPawError.InvalidRequestError)
+            return
+        }
         
         let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
-            if let completion = completion {
-                let result = self.buildJSONResponse(data: data, error: error)
-                completion(result.0, result.1)
-            }
+            let result = self.buildJSONResponse(data: data, error: error)
+            completion(result.0, result.1)
         }
         task.resume()
     }
     
-    func requestPetsFor(type: PetType, breed: String, zip: String, offset: Int, completion: RequestCompletionBlock?) {
-        let request = self.buildRequestFor(fileName: "pet.find", params: ["animal" : type.rawValue, "breed" : breed, "location" : zip, "offset" : String(offset), "output" : "full"])
+    func requestPetsFor(type: PetType, breed: String, zip: String, completion: @escaping RequestCompletionBlock) {
+        guard let request = self.buildRequestFor(fileName: "animals", params: ["type" : type.rawValue, "breed" : breed, "location" : zip, "page" : "1", "limit" : "100"]) else {
+            completion(nil, PawPawError.InvalidRequestError)
+            return
+        }
         
         let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
-            if let completion = completion {
-                let result = self.buildJSONResponse(data: data, error: error)
-                completion(result.0, result.1)
-            }
+            let result = self.buildJSONResponse(data: data, error: error)
+            completion(result.0, result.1)
         }
         task.resume()
     }
     
     // MARK: Convenience Functions
     
-    private func buildRequestFor(fileName: String, params: [String : String]) -> URLRequest {
-        var urlString = "\(PetFinderURL)/\(fileName)?format=json&key=\(APIKey)"
-        for curKey in Array(params.keys) {
-            if let curValue = params[curKey] {
-                urlString += "&\(curKey)=\(curValue)"
-            }
+    private func buildRequestFor(fileName: String, params: [String : String]) -> URLRequest? {
+        guard var urlComponents = URLComponents(string: "\(PetFinderURL)/\(fileName)") else {
+            return nil
         }
-        return URLRequest(url: URL(string: urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!)
+
+        var queryItems = [URLQueryItem]()
+        for (curKey, curValue) in params {
+            queryItems.append(URLQueryItem(name: curKey, value: curValue))
+        }
+        urlComponents.queryItems = queryItems
+
+        if let url = urlComponents.url {
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            while accessToken == nil {
+                print("Waiting for Access Token.")
+            }
+            request.addValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
+
+            return request
+        }
+
+        return nil
     }
     
     private func buildJSONResponse(data: Data?, error: Error?) -> (JSON?, Error?) {
