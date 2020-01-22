@@ -173,6 +173,20 @@ class PetFinderAPI {
         }
         task.resume()
     }
+
+    func requestBreedsFor(type: PetType, completion: @escaping RequestCompletionBlock) {
+        validateAccessToken()
+        guard let request = self.buildRequestFor(fileName: "types/\(type.rawValue)/breeds", params: [:]) else {
+            completion(nil, PawPawError.InvalidRequestError)
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
+            let result = self.buildJSONResponse(data: data, error: error)
+            completion(result.0, result.1)
+        }
+        task.resume()
+    }
     
     // MARK: Convenience Functions
     

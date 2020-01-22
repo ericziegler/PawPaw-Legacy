@@ -31,7 +31,9 @@ class PetCell: UICollectionViewCell {
     
     func layoutFor(pet: Pet) {
         if let photoURL = pet.photoURLs.first {
-            self.photoImageView.loadImageUsingCache(withUrl: photoURL)
+            DispatchQueue.main.async {
+                self.photoImageView.loadImageUsingCache(withUrl: photoURL)
+            }
         }
         self.nameLabel.text = pet.name
     }

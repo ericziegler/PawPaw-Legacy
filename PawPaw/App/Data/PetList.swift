@@ -93,6 +93,7 @@ class PetList {
             if let strongSelf = self, let resultPets = resultPets {
                 strongSelf.pets.append(contentsOf: resultPets)
                 strongSelf.filterDuplicates()
+                strongSelf.pets = strongSelf.pets.sorted(by: { $0.name < $1.name })
             }
             if let completion = completion {
                 completion(resultPets, resultError)
