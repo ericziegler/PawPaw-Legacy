@@ -24,6 +24,8 @@ let AccessTokenCacheKey = "AccessTokenCacheKey"
 let AccessTokenTimestampCacheKey = "AccessTokenTimestampCacheKey"
 let AccessTokenTimeLimit: TimeInterval = 3480
 
+let PetFinderDescriptionSeparator = "<div class=\"u-vr4x\">"
+
 typealias RequestCompletionBlock = (_ response: JSON?, _ error: Error?) -> ()
 
 class PetFinderAPI {

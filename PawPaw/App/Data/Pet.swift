@@ -19,6 +19,7 @@ let PetShelterZipCacheKey = "PetShelterZipCacheKey"
 let PetShelterPhoneCacheKey = "PetShelterPhoneCacheKey"
 let PetShelterEmailCacheKey = "PetShelterEmailCacheKey"
 let PetPhotoURLsCacheKey = "PetPhotoURLsCacheKey"
+let PetfinderURLCacheKey = "PetfinderURLCacheKey"
 let PetNameCacheKey = "PetNameCacheKey"
 let PetBreedCacheKey = "PetBreedCacheKey"
 let PetStoryCacheKey = "PetStoryCacheKey"
@@ -47,6 +48,7 @@ class Pet: NSObject, NSCoding {
     var shelterFormattedPhone: String = ""
     var shelterEmail: String = ""
     var photoURLs: [String] = [String]()
+    var petfinderURL: String = ""
     var name: String = ""
     var breed: String = ""
     var story: String = ""
@@ -119,6 +121,9 @@ class Pet: NSObject, NSCoding {
         if let cachedPhotoData = decoder.decodeObject(forKey: PetPhotoURLsCacheKey) as? Data, let cachedPhotoURLs = NSKeyedUnarchiver.unarchiveObject(with: cachedPhotoData) as? [String] {
             self.photoURLs = cachedPhotoURLs
         }
+        if let cachedPetFinderURL = decoder.decodeObject(forKey: PetfinderURLCacheKey) as? String {
+            self.petfinderURL = cachedPetFinderURL
+        }
         if let cachedName = decoder.decodeObject(forKey: PetNameCacheKey) as? String {
             self.name = cachedName
         }
@@ -157,6 +162,7 @@ class Pet: NSObject, NSCoding {
         encoder.encode(self.shelterEmail, forKey: PetShelterEmailCacheKey)
         let photoData = NSKeyedArchiver.archivedData(withRootObject: self.photoURLs)
         encoder.encode(photoData, forKey: PetPhotoURLsCacheKey)
+        encoder.encode(self.petfinderURL, forKey: PetfinderURLCacheKey)
         encoder.encode(self.name, forKey: PetNameCacheKey)
         encoder.encode(self.breed, forKey: PetBreedCacheKey)
         encoder.encode(self.story, forKey: PetStoryCacheKey)
@@ -179,6 +185,9 @@ class Pet: NSObject, NSCoding {
         }
         if let parsedShelterId = props["organization_id"].string {
             self.shelterId = parsedShelterId
+        }
+        if let parsedPetfinderURL = props["url"].string {
+            self.petfinderURL = parsedPetfinderURL
         }
         if let parsedName = props["name"].string {
             self.name = parsedName.strippingHTML()

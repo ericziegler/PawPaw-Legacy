@@ -9,6 +9,7 @@
 import UIKit
 import MessageUI
 import MapKit
+import WebKit
 
 // MARK: Constants
 
@@ -22,6 +23,7 @@ class PetDetailViewController: BaseViewController {
     
     var pet: Pet!
     var loadingPetDetails = false
+    var loadingView: LoadingView?
     
     // MARK: Init
     
@@ -37,17 +39,18 @@ class PetDetailViewController: BaseViewController {
         petTable.rowHeight = UITableView.automaticDimension
         petTable.estimatedRowHeight = 45.5
 
-        // TODO: Implement based on feedback from PetFinder
-//        loadingPetDetails = true
-//        Pet.loadDetailsWithId(petId: pet.identifier) { (pet, error) in
-//            if error == nil  && pet != nil {
-//                self.pet = pet!
-//            }
-//            self.loadingPetDetails = false
-//            DispatchQueue.main.async {
-//                self.petTable.reloadData()
-//            }
-//        }
+        loadPetDescriptionFromSite()
+    }
+
+    private func loadPetDescriptionFromSite() {
+        if let petURL = URL(string: pet.petfinderURL) {
+            loadingView = LoadingView.displayIn(parentView: self.view, animated: true)
+            loadingPetDetails = true
+            let petfinderView = WKWebView(frame: CGRect(x: 0, y: 0, width: 0.5, height: 0.5))
+            petfinderView.navigationDelegate = self
+            self.view.addSubview(petfinderView)
+            petfinderView.load(URLRequest(url: petURL))
+        }
     }
     
     // MARK: Actions
@@ -240,4 +243,29 @@ extension PetDetailViewController: PetPhotoCellDelegate {
         self.present(photoVC, animated: true, completion: nil)
     }
     
+}
+
+extension PetDetailViewController: WKNavigationDelegate {
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) { webView.evaluateJavaScript("document.documentElement.outerHTML.toString()", completionHandler: { (html: Any?, error: Error?) in
+        self.loadingPetDetails = false
+        self.loadingView?.dismissWith(animation: false)
+            if let htmlString = html as? String {
+                let htmlComponents = htmlString.components(separatedBy: PetFinderDescriptionSeparator)
+                for curComponent in htmlComponents {
+                    if let stringStart = curComponent.substring(start: 0, offsetBy: 9), stringStart == "\n        " {
+                        let storyComponents = curComponent.components(separatedBy: "</div>")
+                        if let firstComponent = storyComponents.first {
+                            if firstComponent.contains("<html") == false && firstComponent.contains("<label") == false {
+                                self.pet.story = firstComponent.replacingOccurrences(of:stringStart, with: "").replacingOccurrences(of: "<br>\n", with: "\n")
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        self.petTable.reloadData()
+        })
+    }
+
 }
